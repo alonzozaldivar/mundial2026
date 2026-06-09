@@ -24,6 +24,31 @@
         h1 { font-size: 1.8rem; }
         @media (min-width: 600px) { h1 { font-size: 2.3rem; } }
         .container { max-width: 1100px; margin: 0 auto; flex: 1; width: 100%; box-sizing: border-box; }
+        
+        /* BOTÓN EXCLUSIVO DE INSTALACIÓN PARA ANDROID */
+        #contenedor-instalar {
+            display: none;
+            background: #e3f2fd;
+            border: 1px solid #90caf9;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .btn-instalar-app {
+            background-color: #1e3d59;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            font-weight: bold;
+            border-radius: 6px;
+            cursor: pointer;
+            margin-top: 5px;
+            font-size: 14px;
+        }
+        .btn-instalar-app:hover { background-color: #152c42; }
+
         .tabs { display: flex; justify-content: center; gap: 6px; margin-bottom: 20px; flex-wrap: wrap; }
         .tab-btn {
             padding: 10px 16px; font-size: 14px; font-weight: bold; cursor: pointer; border: none;
@@ -61,27 +86,9 @@
         .llave-container { display: flex; flex-direction: column; gap: 12px; max-width: 700px; margin: 0 auto; }
         .alerta-vacio { text-align: center; color: #ff6e40; font-weight: bold; padding: 20px; }
         
-        /* Contenedor de Botones de Respaldo */
-        .zona-respaldo {
-            display: flex;
-            gap: 10px;
-            justify-content: center;
-            margin-top: 20px;
-            flex-wrap: wrap;
-        }
-        .btn-respaldo {
-            padding: 10px 16px;
-            font-size: 13px;
-            font-weight: bold;
-            cursor: pointer;
-            border-radius: 6px;
-            border: 1px solid #ccc;
-            background-color: #fff;
-            color: #333;
-            transition: background 0.2s;
-        }
+        .zona-respaldo { display: flex; gap: 10px; justify-content: center; margin-top: 20px; flex-wrap: wrap; }
+        .btn-respaldo { padding: 10px 16px; font-size: 13px; font-weight: bold; cursor: pointer; border-radius: 6px; border: 1px solid #ccc; background-color: #fff; color: #333; transition: background 0.2s; }
         .btn-respaldo:hover { background-color: #f0f0f0; }
-
         footer { text-align: center; padding: 20px; margin-top: 40px; font-size: 13px; color: #666; border-top: 1px solid #e0e0e0; }
     </style>
 </head>
@@ -90,6 +97,11 @@
 <div class="container">
     <h1>🏆 FIFA UNITED 2026</h1>
     
+    <div id="contenedor-instalar">
+        <span>📱 ¡Lleva tus estadísticas a todas partes!</span><br>
+        <button class="btn-instalar-app" onclick="ejecutarInstalacion()">Descargar App en Android</button>
+    </div>
+
     <div class="tabs">
         <button class="tab-btn active" onclick="cambiarPestaña('grupos')">Grupos</button>
         <button class="tab-btn" onclick="cambiarPestaña('r16vos')">16vos</button>
@@ -125,10 +137,36 @@
 <footer>&copy; alonzo 2026. Todos los derechos reservados.</footer>
 
 <script>
-if (!localStorage.getItem("mundial2026_v9_backup")) {
+// Forzar actualización interna de caché de la PWA
+if (!localStorage.getItem("mundial2026_v10_installbutton")) {
     localStorage.clear();
-    localStorage.setItem("mundial2026_v9_backup", "true");
+    localStorage.setItem("mundial2026_v10_installbutton", "true");
 }
+
+// --- CAPTURA DEL EVENTO DE INSTALACIÓN NATIVA ---
+let eventoInstalacion;
+window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault(); // Detener el aviso automático molesto
+    eventoInstalacion = e; // Guardar el evento para usarlo con nuestro botón
+    document.getElementById('contenedor-instalar').style.display = 'block'; // Mostrar la barra azul
+});
+
+function ejecutarInstalacion() {
+    if (!eventoInstalacion) return;
+    document.getElementById('contenedor-instalar').style.display = 'none'; // Ocultar el botón temporalmente
+    eventoInstalacion.prompt(); // Desplegar la ventana nativa de descarga de Android
+    eventoInstalacion.userChoice.then((choiceResult) => {
+        if (choiceResult.outcome === 'accepted') {
+            console.log('El usuario instaló la aplicación');
+        }
+        eventoInstalacion = null;
+    });
+}
+
+window.addEventListener('appinstalled', () => {
+    document.getElementById('contenedor-instalar').style.display = 'none'; // Ocultar por completo una vez instalada
+    console.log('FIFA UNITED 2026 instalada correctamente en el dispositivo');
+});
 
 if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
@@ -249,7 +287,7 @@ const configuracionMundial = {
     eliminatorias: { r16vos: [], octavos: [], cuartos: [], semis: [], final: [] }
 };
 
-let datosMundial = JSON.parse(localStorage.getItem("mundial2026_final_v9")) || configuracionMundial;
+let datosMundial = JSON.parse(localStorage.getItem("mundial2026_final_v10")) || configuracionMundial;
 let cacheEstadisticas = {};
 
 function cambiarPestaña(fase) {
@@ -263,7 +301,7 @@ function cambiarPestaña(fase) {
 }
 
 function guardarYCalcular() {
-    localStorage.setItem("mundial2026_final_v9", JSON.stringify(datosMundial));
+    localStorage.setItem("mundial2026_final_v10", JSON.stringify(datosMundial));
     calcularTablas();
 }
 
@@ -376,7 +414,7 @@ function avanzarADieciseisavos() {
         return { id: emp.id, local: emp.l || "Desconocido", visitante: emp.v || "Desconocido", golesL: ex?ex.golesL:"", golesV: ex?ex.golesV:"", ganadorPenaltis: ex?ex.ganadorPenaltis:"" };
     });
     if(datosMundial.eliminatorias.octavos.length === 0) inicializarRondasSiguientes();
-    localStorage.setItem("mundial2026_final_v9", JSON.stringify(datosMundial));
+    localStorage.setItem("mundial2026_final_v10", JSON.stringify(datosMundial));
     alert("🎉 ¡Dieciseisavos de Final generados con éxito!");
     cambiarPestaña('r16vos');
 }
@@ -473,7 +511,7 @@ function actualizarGolesEliminatoria(fase, id, tipo, valor) {
         partido[tipo === 'L' ? 'golesL' : 'golesV'] = (valor === "") ? "" : parseInt(valor);
         if (partido.golesL !== partido.golesV) partido.ganadorPenaltis = "";
         encadenarSiguienteRonda(fase);
-        localStorage.setItem("mundial2026_final_v9", JSON.stringify(datosMundial));
+        localStorage.setItem("mundial2026_final_v10", JSON.stringify(datosMundial));
         renderizarFaseEliminatoria(fase);
     }
 }
@@ -483,11 +521,10 @@ function actualizarPenaltis(fase, id, ganador) {
     if (partido) {
         partido.ganadorPenaltis = ganador;
         encadenarSiguienteRonda(fase);
-        localStorage.setItem("mundial2026_final_v9", JSON.stringify(datosMundial));
+        localStorage.setItem("mundial2026_final_v10", JSON.stringify(datosMundial));
     }
 }
 
-// --- NUEVAS FUNCIONES DE RESPALDO Y DESCARGA ---
 function descargarDatos() {
     const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(datosMundial, null, 2));
     const downloadAnchor = document.createElement('a');
@@ -501,24 +538,19 @@ function descargarDatos() {
 function cargarDatos(event) {
     const file = event.target.files[0];
     if (!file) return;
-    
     const reader = new FileReader();
     reader.onload = function(e) {
         try {
             const datosCargados = JSON.parse(e.target.result);
             if (datosCargados.grupos && datosCargados.partidos && datosCargados.eliminatorias) {
                 datosMundial = datosCargados;
-                localStorage.setItem("mundial2026_final_v9", JSON.stringify(datosMundial));
+                localStorage.setItem("mundial2026_final_v10", JSON.stringify(datosMundial));
                 inicializarPartidosGrupos();
                 calcularTablas();
                 alert("✅ ¡Respaldo cargado con éxito!");
                 location.reload();
-            } else {
-                alert("⚠️ El archivo no tiene el formato correcto del Mundial.");
-            }
-        } catch (err) {
-            alert("❌ Error al leer el archivo JSON.");
-        }
+            } else { alert("⚠️ El archivo no tiene el formato correcto."); }
+        } catch (err) { alert("❌ Error al leer el archivo JSON."); }
     };
     reader.readAsText(file);
 }

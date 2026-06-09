@@ -4,175 +4,85 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FIFA UNITED 2026</title>
+    <link rel="manifest" href="./manifest.json">
+    <meta name="theme-color" content="#1e3d59">
+    <link rel="apple-touch-icon" href="https://img.icons8.com/color/192/000000/trophy.png">
+    
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: #f4f7f6;
             color: #333;
             margin: 0;
-            padding: 20px;
+            padding: 10px;
             display: flex;
             flex-direction: column;
             min-height: 100vh;
         }
-        h1, h2, h3 {
-            text-align: center;
-            color: #1e3d59;
-        }
-        .container {
-            max-width: 1100px;
-            margin: 0 auto;
-            flex: 1;
-            width: 100%;
-        }
-        /* Pestañas de Navegación */
-        .tabs {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
-        }
+        @media (min-width: 600px) { body { padding: 20px; } }
+        h1, h2, h3 { text-align: center; color: #1e3d59; margin-top: 10px; }
+        h1 { font-size: 1.8rem; }
+        @media (min-width: 600px) { h1 { font-size: 2.3rem; } }
+        .container { max-width: 1100px; margin: 0 auto; flex: 1; width: 100%; box-sizing: border-box; }
+        .tabs { display: flex; justify-content: center; gap: 6px; margin-bottom: 20px; flex-wrap: wrap; }
         .tab-btn {
-            padding: 12px 24px;
-            font-size: 15px;
-            font-weight: bold;
-            cursor: pointer;
-            border: none;
-            border-radius: 8px;
-            background-color: #e0e0e0;
-            color: #555;
-            transition: all 0.3s;
+            padding: 10px 16px; font-size: 14px; font-weight: bold; cursor: pointer; border: none;
+            border-radius: 8px; background-color: #e0e0e0; color: #555; transition: all 0.3s;
+            flex: 1 1 calc(33.33% - 8px); text-align: center;
         }
-        .tab-btn.active {
-            background-color: #1e3d59;
-            color: white;
-        }
-        .seccion {
-            background: white;
-            padding: 20px;
-            border-radius: 12px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-            margin-bottom: 30px;
-            display: none;
-        }
-        .seccion.active {
-            display: block;
-        }
-        .grid-tablas {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 20px;
-        }
-        .lista-partidos {
-            max-height: 450px;
-            overflow-y: auto;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            padding: 10px;
-            background: #fafafa;
-        }
-        .partido {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 12px 15px;
-            border-bottom: 1px solid #eee;
-            background: white;
-            margin-bottom: 5px;
-            border-radius: 6px;
-        }
-        .info-partido {
-            font-size: 11px;
-            color: #666;
-            width: 20%;
-        }
-        .equipo-label { 
-            width: 30%; 
-            font-weight: 500; 
-            font-size: 14px; 
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        .local { justify-content: flex-end; text-align: right; }
-        .visitante { justify-content: flex-start; text-align: left; }
-        .bandera-icon {
-            width: 24px;
-            height: auto;
-            border: 1px solid #ddd;
-            border-radius: 2px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-        }
-        .marcador {
-            width: 18%;
-            display: flex;
-            justify-content: center;
-            gap: 8px;
-            align-items: center;
-        }
-        .marcador input {
-            width: 38px;
-            text-align: center;
-            padding: 4px;
-            font-size: 15px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-        }
-        .penaltis {
-            font-size: 11px;
-            color: #ff6e40;
-            margin-top: 2px;
-            text-align: center;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 10px;
-            font-size: 13px;
-            background: white;
-        }
-        th, td { padding: 8px 5px; text-align: center; border-bottom: 1px solid #eee; }
+        @media (min-width: 600px) { .tab-btn { padding: 12px 24px; font-size: 15px; flex: none; } }
+        .tab-btn.active { background-color: #1e3d59; color: white; }
+        .seccion { background: white; padding: 15px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); margin-bottom: 20px; display: none; box-sizing: border-box; }
+        @media (min-width: 600px) { .seccion { padding: 20px; margin-bottom: 30px; } }
+        .seccion.active { display: block; }
+        .grid-tablas { display: grid; grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); gap: 15px; }
+        @media (min-width: 600px) { .grid-tablas { gap: 20px; } }
+        .tabla-responsiva { width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; margin-top: 10px; border: 1px solid #eee; border-radius: 6px; }
+        .lista-partidos { max-height: 450px; overflow-y: auto; border: 1px solid #ddd; border-radius: 8px; padding: 8px; background: #fafafa; }
+        .partido { display: flex; flex-direction: column; padding: 12px; border-bottom: 1px solid #eee; background: white; margin-bottom: 8px; border-radius: 6px; gap: 8px; }
+        @media (min-width: 650px) { .partido { display: flex; flex-direction: row; justify-content: space-between; align-items: center; padding: 12px 15px; margin-bottom: 5px; gap: 0; } }
+        .info-partido { font-size: 11px; color: #666; text-align: center; border-bottom: 1px dashed #eee; padding-bottom: 4px; }
+        @media (min-width: 650px) { .info-partido { width: 20%; text-align: left; border-bottom: none; padding-bottom: 0; } }
+        .equipo-label { font-weight: 500; font-size: 14px; display: flex; align-items: center; gap: 8px; justify-content: center; }
+        @media (min-width: 650px) { .equipo-label { width: 30%; } .local { justify-content: flex-end; text-align: right; } .visitante { justify-content: flex-start; text-align: left; } }
+        .bandera-icon { width: 22px; height: auto; border: 1px solid #ddd; border-radius: 2px; }
+        .marcador { display: flex; justify-content: center; gap: 12px; align-items: center; margin: 4px 0; }
+        @media (min-width: 650px) { .marcador { width: 18%; margin: 0; gap: 8px; } }
+        .marcador input { width: 45px; text-align: center; padding: 6px; font-size: 16px; border: 1px solid #ccc; border-radius: 6px; }
+        @media (min-width: 650px) { .marcador input { width: 38px; padding: 4px; font-size: 15px; border-radius: 4px; } }
+        .penaltis { font-size: 11px; color: #ff6e40; margin-top: 2px; text-align: center; }
+        table { width: 100%; border-collapse: collapse; font-size: 13px; background: white; min-width: 280px; }
+        th, td { padding: 10px 6px; text-align: center; border-bottom: 1px solid #eee; }
         th { background-color: #1e3d59; color: white; }
         .clasificado-directo { background-color: #e8f5e9 !important; }
         .zona-espera { background-color: #fffde7 !important; }
-        .btn {
-            display: block;
-            width: 100%;
-            padding: 14px;
-            background-color: #ff6e40;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-size: 16px;
-            cursor: pointer;
-            font-weight: bold;
-            margin-top: 15px;
-        }
+        .btn { display: block; width: 100%; padding: 14px; background-color: #ff6e40; color: white; border: none; border-radius: 8px; font-size: 16px; cursor: pointer; font-weight: bold; margin-top: 15px; box-sizing: border-box; }
         .btn:hover { background-color: #e65100; }
+        .llave-container { display: flex; flex-direction: column; gap: 12px; max-width: 700px; margin: 0 auto; }
+        .alerta-vacio { text-align: center; color: #ff6e40; font-weight: bold; padding: 20px; }
         
-        .llave-container {
+        /* Contenedor de Botones de Respaldo */
+        .zona-respaldo {
             display: flex;
-            flex-direction: column;
-            gap: 12px;
-            max-width: 700px;
-            margin: 0 auto;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 20px;
+            flex-wrap: wrap;
         }
-        .alerta-vacio {
-            text-align: center;
-            color: #ff6e40;
+        .btn-respaldo {
+            padding: 10px 16px;
+            font-size: 13px;
             font-weight: bold;
-            padding: 20px;
+            cursor: pointer;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            background-color: #fff;
+            color: #333;
+            transition: background 0.2s;
         }
-        /* Footer para el Copyright */
-        footer {
-            text-align: center;
-            padding: 20px;
-            margin-top: 40px;
-            font-size: 14px;
-            color: #666;
-            border-top: 1px solid #e0e0e0;
-        }
+        .btn-respaldo:hover { background-color: #f0f0f0; }
+
+        footer { text-align: center; padding: 20px; margin-top: 40px; font-size: 13px; color: #666; border-top: 1px solid #e0e0e0; }
     </style>
 </head>
 <body>
@@ -181,60 +91,49 @@
     <h1>🏆 FIFA UNITED 2026</h1>
     
     <div class="tabs">
-        <button class="tab-btn active" onclick="cambiarPestaña('grupos')">Fase de Grupos</button>
-        <button class="tab-btn" onclick="cambiarPestaña('r16vos')">Dieciseisavos</button>
+        <button class="tab-btn active" onclick="cambiarPestaña('grupos')">Grupos</button>
+        <button class="tab-btn" onclick="cambiarPestaña('r16vos')">16vos</button>
         <button class="tab-btn" onclick="cambiarPestaña('octavos')">Octavos</button>
         <button class="tab-btn" onclick="cambiarPestaña('cuartos')">Cuartos</button>
-        <button class="tab-btn" onclick="cambiarPestaña('semis')">Semifinal</button>
-        <button class="tab-btn" onclick="cambiarPestaña('final')">Gran Final 👑</button>
+        <button class="tab-btn" onclick="cambiarPestaña('semis')">Semis</button>
+        <button class="tab-btn" onclick="cambiarPestaña('final')">Final 👑</button>
     </div>
     
     <div id="sec-grupos" class="seccion active">
         <h2>📅 Calendario de Grupos (72 Partidos)</h2>
         <div class="lista-partidos" id="contenedor-partidos"></div>
         <button class="btn" onclick="avanzarADieciseisavos()">Confirmar Grupos y Clasificar a 2da Ronda 🚀</button>
-        
         <h2>🏅 Tabla de Mejores Terceros</h2>
-        <div id="tabla-mejores-terceros" style="margin-bottom:30px;"></div>
-
+        <div class="tabla-responsiva" id="tabla-mejores-terceros" style="margin-bottom:30px;"></div>
         <h2>📊 Tablas de Posiciones</h2>
         <div class="grid-tablas" id="contenedor-tablas"></div>
     </div>
 
-    <div id="sec-r16vos" class="seccion">
-        <h2>⚔️ Dieciseisavos de Final (Ronda de 32)</h2>
-        <div class="llave-container" id="contenedor-16vos"></div>
-    </div>
+    <div id="sec-r16vos" class="seccion"><h2 class="llave-container">⚔️ Dieciseisavos (Ronda de 32)</h2><div class="llave-container" id="contenedor-16vos"></div></div>
+    <div id="sec-octavos" class="seccion"><h2>🔥 Octavos (Ronda de 16)</h2><div class="llave-container" id="contenedor-octavos"></div></div>
+    <div id="sec-cuartos" class="seccion"><h2>⚡ Cuartos de Final</h2><div class="llave-container" id="contenedor-cuartos"></div></div>
+    <div id="sec-semis" class="seccion"><h2>🛡️ Semifinales</h2><div class="llave-container" id="contenedor-semis"></div></div>
+    <div id="sec-final" class="seccion"><h2>👑 Gran Final del Mundo</h2><div class="llave-container" id="contenedor-final"></div></div>
 
-    <div id="sec-octavos" class="seccion">
-        <h2>🔥 Octavos de Final (Ronda de 16)</h2>
-        <div class="llave-container" id="contenedor-octavos"></div>
-    </div>
-
-    <div id="sec-cuartos" class="seccion">
-        <h2>⚡ Cuartos de Final</h2>
-        <div class="llave-container" id="contenedor-cuartos"></div>
-    </div>
-
-    <div id="sec-semis" class="seccion">
-        <h2>🛡️ Semifinales</h2>
-        <div class="llave-container" id="contenedor-semis"></div>
-    </div>
-
-    <div id="sec-final" class="seccion">
-        <h2>👑 Gran Final del Mundo</h2>
-        <div class="llave-container" id="contenedor-final"></div>
+    <div class="zona-respaldo">
+        <button class="btn-respaldo" onclick="descargarDatos()">📥 Descargar Respaldo (.json)</button>
+        <button class="btn-respaldo" onclick="document.getElementById('input-archivo').click()">📤 Cargar Respaldo</button>
+        <input type="file" id="input-archivo" style="display:none;" accept=".json" onchange="cargarDatos(event)">
     </div>
 </div>
 
-<footer>
-    &copy; alonzo 2026. Todos los derechos reservados.
-</footer>
+<footer>&copy; alonzo 2026. Todos los derechos reservados.</footer>
 
 <script>
-if (!localStorage.getItem("mundial2026_v6_clean")) {
+if (!localStorage.getItem("mundial2026_v9_backup")) {
     localStorage.clear();
-    localStorage.setItem("mundial2026_v6_clean", "true");
+    localStorage.setItem("mundial2026_v9_backup", "true");
+}
+
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js').catch(err => console.log(err));
+    });
 }
 
 const codigosBanderas = {
@@ -255,7 +154,6 @@ const codigosBanderas = {
 function f(nombre, esLocal) {
     const codigo = codigosBanderas[nombre];
     if (!codigo) return nombre;
-    
     const imgHtml = `<img class="bandera-icon" src="https://flagcdn.com/w40/${codigo}.png" alt="${nombre}">`;
     return esLocal ? `<span>${nombre}</span> ${imgHtml}` : `${imgHtml} <span>${nombre}</span>`;
 }
@@ -318,60 +216,54 @@ const configuracionMundial = {
         { id: 40, fecha: "21 Jun", horario: "19:00", local: "Nueva Zelanda", visitante: "Egipto", golesL: "", golesV: "" },
         { id: 41, fecha: "22 Jun", horario: "11:00", local: "Argentina", visitante: "Austria", golesL: "", golesV: "" },
         { id: 42, fecha: "22 Jun", horario: "15:00", local: "Francia", visitante: "Irak", golesL: "", golesV: "" },
-        { id: 43, fecha: "22 Jun", horario: "18:00", local: "Noruega", visitante: "Senegal", golesL: "", golesV: "" },
-        { id: 44, fecha: "22 Jun", horario: "21:00", local: "Jordania", visitante: "Argelia", golesL: "", golesV: "" },
-        { id: 45, fecha: "23 Jun", horario: "11:00", local: "Portugal", visitante: "Usbekistán", golesL: "", golesV: "" },
-        { id: 46, fecha: "23 Jun", horario: "14:00", local: "Inglaterra", visitante: "Ghana", golesL: "", golesV: "" },
-        { id: 47, fecha: "23 Jun", horario: "17:00", local: "Panamá", visitante: "Croacia", golesL: "", golesV: "" },
-        { id: 48, fecha: "23 Jun", horario: "20:00", local: "Colombia", visitante: "Congo Democrático", golesL: "", golesV: "" },
-        { id: 49, fecha: "24 Jun", horario: "13:00", local: "Suiza", visitante: "Canadá", golesL: "", golesV: "" },
-        { id: 50, fecha: "24 Jun", horario: "13:00", local: "Bosnia Herzegovina", visitante: "Catar", golesL: "", golesV: "" },
-        { id: 51, fecha: "24 Jun", horario: "16:00", local: "Escocia", visitante: "Brasil", golesL: "", golesV: "" },
-        { id: 52, fecha: "24 Jun", horario: "16:00", local: "Marruecos", visitante: "Haití", golesL: "", golesV: "" },
-        { id: 53, fecha: "24 Jun", horario: "19:00", local: "República Checa", visitante: "México", golesL: "", golesV: "" },
-        { id: 54, fecha: "24 Jun", horario: "19:00", local: "Sudáfrica", visitante: "Corea del Sur", golesL: "", golesV: "" },
-        { id: 55, fecha: "25 Jun", horario: "14:00", local: "Curasao", visitante: "Costa de Marfil", golesL: "", golesV: "" },
-        { id: 56, fecha: "25 Jun", horario: "14:00", local: "Ecuador", visitante: "Alemania", golesL: "", golesV: "" },
-        { id: 57, fecha: "25 Jun", horario: "17:00", local: "Japón", visitante: "Suecia", golesL: "", golesV: "" },
-        { id: 58, fecha: "25 Jun", horario: "17:00", local: "Túnez", visitante: "Holanda", golesL: "", golesV: "" },
-        { id: 59, fecha: "25 Jun", horario: "20:00", local: "Turquía", visitante: "Estados Unidos", golesL: "", golesV: "" },
-        { id: 60, fecha: "25 Jun", horario: "20:00", local: "Paraguay", visitante: "Australia", golesL: "", golesV: "" },
-        { id: 61, fecha: "26 Jun", horario: "13:00", local: "Noruega", visitante: "Francia", golesL: "", golesV: "" },
-        { id: 62, fecha: "26 Jun", horario: "13:00", local: "Senegal", visitante: "Irak", golesL: "", golesV: "" },
-        { id: 63, fecha: "26 Jun", horario: "18:00", local: "Uruguay", visitante: "España", golesL: "", golesV: "" },
-        { id: 64, fecha: "26 Jun", horario: "18:00", local: "Cabo Verde", visitante: "Arabia Saudita", golesL: "", golesV: "" },
-        { id: 65, fecha: "26 Jun", horario: "21:00", local: "Egipto", visitante: "Irán", golesL: "", golesV: "" },
-        { id: 66, fecha: "26 Jun", horario: "21:00", local: "Nueva Zelanda", visitante: "Bélgica", golesL: "", golesV: "" },
-        { id: 67, fecha: "27 Jun", horario: "15:00", local: "Panamá", visitante: "Inglaterra", golesL: "", golesV: "" },
-        { id: 68, fecha: "27 Jun", horario: "15:00", local: "Croacia", visitante: "Ghana", golesL: "", golesV: "" },
-        { id: 69, fecha: "27 Jun", horario: "17:30", local: "Congo Democrático", visitante: "Usbekistán", golesL: "", golesV: "" },
-        { id: 70, fecha: "27 Jun", horario: "17:30", local: "Colombia", visitante: "Portugal", golesL: "", golesV: "" },
-        { id: 71, fecha: "27 Jun", horario: "20:00", local: "Jordania", visitante: "Argentina", golesL: "", golesV: "" },
-        { id: 72, fecha: "27 Jun", horario: "20:00", local: "Argelia", visitante: "Austria", golesL: "", golesV: "" }
+        { id: 43, fecha: "22 Jun", horario: "18:00", local: "Noruega", visitante: "SENEGAL", golesL: "", golesV: "" },
+        { id: 44, fecha: "22 Jun", horario: "21:00", local: "JORDANIA", visitante: "ARGELIA", golesL: "", golesV: "" },
+        { id: 45, fecha: "23 Jun", horario: "11:00", local: "PORTUGAL", visitante: "USBEKISTAN", golesL: "", golesV: "" },
+        { id: 46, fecha: "23 Jun", horario: "14:00", local: "INGLATERRA", visitante: "GHANA", golesL: "", golesV: "" },
+        { id: 47, fecha: "23 Jun", horario: "17:00", local: "PANAMA", visitante: "CROACIA", golesL: "", golesV: "" },
+        { id: 48, fecha: "23 Jun", horario: "20:00", local: "COLOMBIA", visitante: "CONGO DEMOCRATICO", golesL: "", golesV: "" },
+        { id: 49, fecha: "24 Jun", horario: "13:00", local: "SUIZA", visitante: "CANADA", golesL: "", golesV: "" },
+        { id: 50, fecha: "24 Jun", horario: "13:00", local: "BOSNIA HERZEGOBINA", visitante: "CATAR", golesL: "", golesV: "" },
+        { id: 51, fecha: "24 Jun", horario: "16:00", local: "ESCOCIA", visitante: "BRASIL", golesL: "", golesV: "" },
+        { id: 52, fecha: "24 Jun", horario: "16:00", local: "MARRUECOS", visitante: "HAITI", golesL: "", golesV: "" },
+        { id: 53, fecha: "24 Jun", horario: "19:00", local: "REPUBLICA CHECA", visitante: "MEXICO", golesL: "", golesV: "" },
+        { id: 54, fecha: "24 Jun", horario: "19:00", local: "SUDAFRICA", visitante: "COREA DEL SUR", golesL: "", golesV: "" },
+        { id: 55, fecha: "25 Jun", horario: "14:00", local: "CURASAO", visitante: "COSTA DE MARFIL", golesL: "", golesV: "" },
+        { id: 56, fecha: "25 Jun", horario: "14:00", local: "ECUADOR", visitante: "ALEMANIA", golesL: "", golesV: "" },
+        { id: 57, fecha: "25 Jun", horario: "17:00", local: "JAPON", visitante: "SUECIA", golesL: "", golesV: "" },
+        { id: 58, fecha: "25 Jun", horario: "17:00", local: "TUNEZ", visitante: "HOLANDA", golesL: "", golesV: "" },
+        { id: 60, fecha: "25 Jun", horario: "20:00", local: "PARAGUAY", visitante: "AUSTRALIA", golesL: "", golesV: "" },
+        { id: 61, fecha: "26 Jun", horario: "13:00", local: "NORUEGA", visitante: "FRANCIA", golesL: "", golesV: "" },
+        { id: 62, fecha: "26 Jun", horario: "13:00", local: "SENEGAL", visitante: "IRAK", golesL: "", golesV: "" },
+        { id: 63, fecha: "26 Jun", horario: "18:00", local: "URUGUAY", visitante: "ESPAÑA", golesL: "", golesV: "" },
+        { id: 64, fecha: "26 Jun", horario: "18:00", local: "CABO VERDE", visitante: "ARABIA SAUDITA", golesL: "", golesV: "" },
+        { id: 65, fecha: "26 Jun", horario: "21:00", local: "EGIPTO", visitante: "IRAN", golesL: "", golesV: "" },
+        { id: 66, fecha: "26 Jun", horario: "21:00", local: "NUEVA ZELANDA", visitante: "BELGICA", golesL: "", golesV: "" },
+        { id: 67, fecha: "27 Jun", horario: "15:00", local: "PANAMA", visitante: "INGLATERRA", golesL: "", golesV: "" },
+        { id: 68, fecha: "27 Jun", horario: "15:00", local: "CROACIA", visitante: "GHANA", golesL: "", golesV: "" },
+        { id: 69, fecha: "27 Jun", horario: "17:30", local: "CONGO DEMOCRATICO", visitante: "UZBEQUISTAN", golesL: "", golesV: "" },
+        { id: 70, fecha: "27 Jun", horario: "17:30", local: "COLOMBIA", visitante: "PORTUGAL", golesL: "", golesV: "" },
+        { id: 71, fecha: "27 Jun", horario: "20:00", local: "JORDANIA", visitante: "ARGENTINA", golesL: "", golesV: "" },
+        { id: 72, fecha: "27 Jun", horario: "20:00", local: "ARGELIA", visitante: "AUSTRIA", golesL: "", golesV: "" }
     ],
     eliminatorias: { r16vos: [], octavos: [], cuartos: [], semis: [], final: [] }
 };
 
-let datosMundial = JSON.parse(localStorage.getItem("mundial2026_final_v6")) || configuracionMundial;
+let datosMundial = JSON.parse(localStorage.getItem("mundial2026_final_v9")) || configuracionMundial;
 let cacheEstadisticas = {};
 
 function cambiarPestaña(fase) {
     document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
     document.querySelectorAll('.seccion').forEach(s => s.classList.remove('active'));
-    
     const btnMap = { 'grupos': 0, 'r16vos': 1, 'octavos': 2, 'cuartos': 3, 'semis': 4, 'final': 5 };
     document.querySelectorAll('.tab-btn')[btnMap[fase]].classList.add('active');
-    
     const secId = fase === 'grupos' ? 'sec-grupos' : `sec-${fase}`;
     document.getElementById(secId).classList.add('active');
-
-    if (fase !== 'grupos') {
-        renderizarFaseEliminatoria(fase);
-    }
+    if (fase !== 'grupos') renderizarFaseEliminatoria(fase);
 }
 
 function guardarYCalcular() {
-    localStorage.setItem("mundial2026_final_v6", JSON.stringify(datosMundial));
+    localStorage.setItem("mundial2026_final_v9", JSON.stringify(datosMundial));
     calcularTablas();
 }
 
@@ -379,12 +271,11 @@ function inicializarPartidosGrupos() {
     const contenedor = document.getElementById("contenedor-partidos");
     if (!contenedor) return;
     contenedor.innerHTML = "";
-    
     datosMundial.partidos.forEach(p => {
         const div = document.createElement("div");
         div.className = "partido";
         div.innerHTML = `
-            <div class="info-partido"><b>N° ${p.id}</b><br>${p.fecha} - ${p.horario}</div>
+            <div class="info-partido"><b>N° ${p.id}</b> | ${p.fecha} - ${p.horario}</div>
             <span class="equipo-label local">${f(p.local, true)}</span>
             <div class="marcador">
                 <input type="number" min="0" value="${p.golesL}" onchange="actualizarGolesGrupo(${p.id}, 'L', this.value)">
@@ -412,7 +303,6 @@ function calcularTablas() {
             cacheEstadisticas[eq] = { nombre: eq, grupo: g, PJ: 0, G: 0, E: 0, P: 0, GF: 0, GC: 0, PTS: 0 };
         });
     }
-
     datosMundial.partidos.forEach(p => {
         if (p.golesL !== "" && p.golesV !== "" && p.golesL !== null && p.golesV !== null) {
             let gL = p.golesL; let gV = p.golesV;
@@ -433,22 +323,19 @@ function renderizarTablasYSectorTerceros() {
     if (!contenedor) return;
     contenedor.innerHTML = "";
     let terceros = [];
-
     for (let g in datosMundial.grupos) {
         let listaEquipos = datosMundial.grupos[g].map(eq => cacheEstadisticas[eq]);
         listaEquipos.sort((a, b) => (b.PTS - a.PTS) || ((b.GF - b.GC) - (a.GF - a.GC)) || (b.GF - a.GF));
         terceros.push(listaEquipos[2]);
-
-        let htmlTabla = `<div><h3>Grupo ${g}</h3><table><thead><tr><th>Equipo</th><th>DG</th><th>PTS</th></tr></thead><tbody>`;
+        let htmlTabla = `<div><h3>Grupo ${g}</h3><div class="tabla-responsiva"><table><thead><tr><th>Equipo</th><th>PJ</th><th>DG</th><th>PTS</th></tr></thead><tbody>`;
         listaEquipos.forEach((eq, index) => {
             let clase = index < 2 ? 'class="clasificado-directo"' : (index === 2 ? 'class="zona-espera"' : '');
             let dg = eq.GF - eq.GC;
-            htmlTabla += `<tr ${clase}><td style="text-align:left; padding-left:8px; display:flex; align-items:center; gap:6px;"><b>${index+1}.</b> ${f(eq.nombre, false)}</td><td>${dg > 0 ? '+'+dg : dg}</td><td><b>${eq.PTS}</b></td></tr>`;
+            htmlTabla += `<tr ${clase}><td style="text-align:left; padding-left:8px; display:flex; align-items:center; gap:6px;"><b>${index+1}.</b> ${f(eq.nombre, false)}</td><td>${eq.PJ}</td><td>${dg > 0 ? '+'+dg : dg}</td><td><b>${eq.PTS}</b></td></tr>`;
         });
-        htmlTabla += `</tbody></table></div>`;
+        htmlTabla += `</tbody></table></div></div>`;
         contenedor.innerHTML += htmlTabla;
     }
-
     terceros.sort((a, b) => (b.PTS - a.PTS) || ((b.GF - b.GC) - (a.GF - a.GC)) || (b.GF - a.GF));
     let htmlT = `<table><thead><tr><th>Pos</th><th>Equipo</th><th>Grupo</th><th>DG</th><th>PTS</th><th>Estado</th></tr></thead><tbody>`;
     terceros.forEach((eq, i) => {
@@ -463,11 +350,7 @@ function renderizarTablasYSectorTerceros() {
 
 function avanzarADieciseisavos() {
     let incompleto = datosMundial.partidos.some(p => p.golesL === "" || p.golesV === "");
-    if (incompleto) {
-        alert("⚠️ Completa primero todos los marcadores de la fase de grupos.");
-        return;
-    }
-
+    if (incompleto) { alert("⚠️ Completa primero todos los marcadores de la fase de grupos."); return; }
     let clasificados = {}; let terceros = [];
     for (let g in datosMundial.grupos) {
         let lista = datosMundial.grupos[g].map(eq => cacheEstadisticas[eq]);
@@ -488,23 +371,18 @@ function avanzarADieciseisavos() {
         { id: 85, l: clasificados["2I"], v: clasificados["2J"] }, { id: 86, l: clasificados["1L"], v: clasificados["3_6"] },
         { id: 87, l: clasificados["1F"], v: clasificados["3_7"] }, { id: 88, l: clasificados["2K"], v: clasificados["2L"] }
     ];
-
     datosMundial.eliminatorias.r16vos = emparejamientos.map(emp => {
         let ex = datosMundial.eliminatorias.r16vos.find(p => p.id === emp.id);
         return { id: emp.id, local: emp.l || "Desconocido", visitante: emp.v || "Desconocido", golesL: ex?ex.golesL:"", golesV: ex?ex.golesV:"", ganadorPenaltis: ex?ex.ganadorPenaltis:"" };
     });
-
     if(datosMundial.eliminatorias.octavos.length === 0) inicializarRondasSiguientes();
-
-    localStorage.setItem("mundial2026_final_v6", JSON.stringify(datosMundial));
+    localStorage.setItem("mundial2026_final_v9", JSON.stringify(datosMundial));
     alert("🎉 ¡Dieciseisavos de Final generados con éxito!");
     cambiarPestaña('r16vos');
 }
 
 function inicializarRondasSiguientes() {
-    datosMundial.eliminatorias.octavos = [];
-    datosMundial.eliminatorias.cuartos = [];
-    datosMundial.eliminatorias.semis = [];
+    datosMundial.eliminatorias.octavos = []; datosMundial.eliminatorias.cuartos = []; datosMundial.eliminatorias.semis = [];
     for(let i=89; i<=96; i++) datosMundial.eliminatorias.octavos.push({ id: i, local: "Ganador ?", visitante: "Ganador ?", golesL:"", golesV:"", ganadorPenaltis:"" });
     for(let i=97; i<=100; i++) datosMundial.eliminatorias.cuartos.push({ id: i, local: "Ganador ?", visitante: "Ganador ?", golesL:"", golesV:"", ganadorPenaltis:"" });
     for(let i=101; i<=102; i++) datosMundial.eliminatorias.semis.push({ id: i, local: "Ganador ?", visitante: "Ganador ?", golesL:"", golesV:"", ganadorPenaltis:"" });
@@ -522,39 +400,27 @@ function obtenerGanador(partido) {
 
 function encadenarSiguienteRonda(faseActual) {
     let el = datosMundial.eliminatorias;
-    
     if (faseActual === 'r16vos') {
         let cruces = [[73,74], [75,76], [77,78], [79,80], [81,82], [83,84], [85,86], [87,88]];
         cruces.forEach((par, index) => {
-            let g1 = obtenerGanador(el.r16vos.find(p=>p.id === par[0]));
-            let g2 = obtenerGanador(el.r16vos.find(p=>p.id === par[1]));
-            el.octavos[index].local = g1 || "Ganador " + par[0];
-            el.octavos[index].visitante = g2 || "Ganador " + par[1];
+            el.octavos[index].local = obtenerGanador(el.r16vos.find(p=>p.id === par[0])) || "Ganador " + par[0];
+            el.octavos[index].visitante = obtenerGanador(el.r16vos.find(p=>p.id === par[1])) || "Ganador " + par[1];
         });
-    }
-    else if (faseActual === 'octavos') {
+    } else if (faseActual === 'octavos') {
         let cruces = [[89,90], [91,92], [93,94], [95,96]];
         cruces.forEach((par, index) => {
-            let g1 = obtenerGanador(el.octavos.find(p=>p.id === par[0]));
-            let g2 = obtenerGanador(el.octavos.find(p=>p.id === par[1]));
-            el.cuartos[index].local = g1 || "Ganador " + par[0];
-            el.cuartos[index].visitante = g2 || "Ganador " + par[1];
+            el.cuartos[index].local = obtenerGanador(el.octavos.find(p=>p.id === par[0])) || "Ganador " + par[0];
+            el.cuartos[index].visitante = obtenerGanador(el.octavos.find(p=>p.id === par[1])) || "Ganador " + par[1];
         });
-    }
-    else if (faseActual === 'cuartos') {
+    } else if (faseActual === 'cuartos') {
         let cruces = [[97,98], [99,100]];
         cruces.forEach((par, index) => {
-            let g1 = obtenerGanador(el.cuartos.find(p=>p.id === par[0]));
-            let g2 = obtenerGanador(el.cuartos.find(p=>p.id === par[1]));
-            el.semis[index].local = g1 || "Ganador " + par[0];
-            el.semis[index].visitante = g2 || "Ganador " + par[1];
+            el.semis[index].local = obtenerGanador(el.cuartos.find(p=>p.id === par[0])) || "Ganador " + par[0];
+            el.semis[index].visitante = obtenerGanador(el.cuartos.find(p=>p.id === par[1])) || "Ganador " + par[1];
         });
-    }
-    else if (faseActual === 'semis') {
-        let g1 = obtenerGanador(el.semis.find(p=>p.id === 101));
-        let g2 = obtenerGanador(el.semis.find(p=>p.id === 102));
-        el.final[0].local = g1 || "Ganador Semifinal 1";
-        el.final[0].visitante = g2 || "Ganador Semifinal 2";
+    } else if (faseActual === 'semis') {
+        el.final[0].local = obtenerGanador(el.semis.find(p=>p.id === 101)) || "Ganador SF1";
+        el.final[0].visitante = obtenerGanador(el.semis.find(p=>p.id === 102)) || "Ganador SF2";
     }
 }
 
@@ -562,20 +428,16 @@ function renderizarFaseEliminatoria(fase) {
     const contenedor = document.getElementById(`contenedor-${fase === 'r16vos' ? '16vos' : fase}`);
     if (!contenedor) return;
     contenedor.innerHTML = "";
-    
     let listaPartidos = datosMundial.eliminatorias[fase];
     if (!listaPartidos || listaPartidos.length === 0) {
         contenedor.innerHTML = "<p class='alerta-vacio'>⚠️ Primero debes procesar la Fase de Grupos.</p>";
         return;
     }
-
     listaPartidos.forEach(p => {
         const div = document.createElement("div");
         div.className = "partido";
-        
         let selectPenaltis = "";
         let esDesconocido = p.local.includes("Ganador") || p.visitante.includes("Ganador") || p.local.includes("SF");
-
         if (p.golesL !== "" && p.golesV !== "" && p.golesL === p.golesV && !esDesconocido) {
             selectPenaltis = `
                 <div class="penaltis">
@@ -588,11 +450,10 @@ function renderizarFaseEliminatoria(fase) {
                 </div>
             `;
         }
-
         div.innerHTML = `
             <div class="info-partido"><b>Partido N° ${p.id}</b></div>
             <span class="equipo-label local">${f(p.local, true)}</span>
-            <div style="display:flex; flex-direction:column; align-items:center; width:24%;">
+            <div class="marcador-container" style="text-align:center;">
                 <div class="marcador">
                     <input type="number" min="0" value="${p.golesL}" onchange="actualizarGolesEliminatoria('${fase}', ${p.id}, 'L', this.value)">
                     <span>-</span>
@@ -610,10 +471,9 @@ function actualizarGolesEliminatoria(fase, id, tipo, valor) {
     const partido = datosMundial.eliminatorias[fase].find(p => p.id === id);
     if (partido) {
         partido[tipo === 'L' ? 'golesL' : 'golesV'] = (valor === "") ? "" : parseInt(valor);
-        if (partido.golesL !== partido.golesV) partido.ganadorPenaltis = ""; 
-        
+        if (partido.golesL !== partido.golesV) partido.ganadorPenaltis = "";
         encadenarSiguienteRonda(fase);
-        localStorage.setItem("mundial2026_final_v6", JSON.stringify(datosMundial));
+        localStorage.setItem("mundial2026_final_v9", JSON.stringify(datosMundial));
         renderizarFaseEliminatoria(fase);
     }
 }
@@ -623,15 +483,47 @@ function actualizarPenaltis(fase, id, ganador) {
     if (partido) {
         partido.ganadorPenaltis = ganador;
         encadenarSiguienteRonda(fase);
-        localStorage.setItem("mundial2026_final_v6", JSON.stringify(datosMundial));
+        localStorage.setItem("mundial2026_final_v9", JSON.stringify(datosMundial));
     }
 }
 
-window.onload = function() {
-    inicializarPartidosGrupos();
-    calcularTablas();
-};
-</script>
+// --- NUEVAS FUNCIONES DE RESPALDO Y DESCARGA ---
+function descargarDatos() {
+    const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(datosMundial, null, 2));
+    const downloadAnchor = document.createElement('a');
+    downloadAnchor.setAttribute("href", dataStr);
+    downloadAnchor.setAttribute("download", "respaldo_mundial2026.json");
+    document.body.appendChild(downloadAnchor);
+    downloadAnchor.click();
+    downloadAnchor.remove();
+}
 
+function cargarDatos(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+    
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        try {
+            const datosCargados = JSON.parse(e.target.result);
+            if (datosCargados.grupos && datosCargados.partidos && datosCargados.eliminatorias) {
+                datosMundial = datosCargados;
+                localStorage.setItem("mundial2026_final_v9", JSON.stringify(datosMundial));
+                inicializarPartidosGrupos();
+                calcularTablas();
+                alert("✅ ¡Respaldo cargado con éxito!");
+                location.reload();
+            } else {
+                alert("⚠️ El archivo no tiene el formato correcto del Mundial.");
+            }
+        } catch (err) {
+            alert("❌ Error al leer el archivo JSON.");
+        }
+    };
+    reader.readAsText(file);
+}
+
+window.onload = function() { inicializarPartidosGrupos(); calcularTablas(); };
+</script>
 </body>
 </html>

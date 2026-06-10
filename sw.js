@@ -1,8 +1,7 @@
-const CACHE_NAME = 'fifa-united-2026-v1';
+const CACHE_NAME = 'fifa-united-2026-v15';
 const ASSETS = [
-  './mundial2026.html',
-  './manifest.json',
-  'https://flagcdn.com/w40/mx.png' // Ejemplo de caché inicial
+  './index.html',
+  './manifest.json'
 ];
 
 // Instalar el Service Worker y almacenar archivos base en caché
@@ -29,12 +28,11 @@ self.addEventListener('activate', e => {
   );
 });
 
-// Estrategia de red: Intentar cargar de internet, si falla usar caché (útil para las imágenes de banderas)
+// Estrategia de red: Intentar cargar de internet, si falla usar caché
 self.addEventListener('fetch', e => {
   e.respondWith(
     caches.match(e.request).then(cachedResponse => {
       if (cachedResponse) {
-        // Devolver de caché pero actualizar en segundo plano si es posible
         fetch(e.request).then(networkResponse => {
           if (networkResponse.status === 200) {
             caches.open(CACHE_NAME).then(cache => cache.put(e.request, networkResponse));
@@ -51,9 +49,19 @@ self.addEventListener('fetch', e => {
           cache.put(e.request, responseToCache);
         });
         return networkResponse;
-      }).catch(() => {
-        // Si no hay red ni caché, falla silenciosamente o sirve algo genérico
-      });
+      }).catch(() => {});
     })
   );
+});
+
+// ESCUCHAR EVENTOS DE NOTIFICACIÓN DESDE LA APP
+self.addEventListener('message', event => {
+  if (event.data && event.data.type === 'MOSTRAR_NOTIFICACION') {
+    self.registration.showNotification(event.data.title, {
+      body: event.data.body,
+      icon: 'https://img.icons8.com/color/192/000000/trophy.png',
+      vibrate: [200, 100, 200],
+      badge: 'https://img.icons8.com/color/96/000000/trophy.png'
+    });
+  }
 });

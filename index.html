@@ -14,7 +14,7 @@
             --color-verde: #1b5e20;
             --color-azul: #0d47a1;
             --color-rojo: #b71c1c;
-            --glass-bg: rgba(255, 255, 255, 0.9);
+            --glass-bg: rgba(255, 255, 255, 0.95);
         }
 
         body {
@@ -42,21 +42,17 @@
             top: 50%; left: 50%;
             transform: translate(-50%, -50%);
             width: 90%; height: 90%;
-            background-image: url('http://googleusercontent.com/image_collection/image_retrieval/2648727964710196245');
+            background-image: url('https://img.icons8.com/color/512/000000/trophy.png');
             background-repeat: no-repeat;
             background-position: center;
             background-size: contain;
-            opacity: 0.15;
+            opacity: 0.08;
             z-index: -1;
         }
 
         @media (min-width: 600px) { body { padding: 20px; } }
 
-        .header-container {
-            text-align: center;
-            padding: 40px 0;
-        }
-
+        .header-container { text-align: center; padding: 40px 0 20px 0; }
         .header-container h1 {
             font-family: 'Bebas Neue', cursive;
             font-size: 5rem;
@@ -71,35 +67,39 @@
             transform: skew(-5deg);
         }
 
-        @media (max-width: 600px) {
-            .header-container h1 { font-size: 3.2rem; letter-spacing: 2px; }
-        }
+        @media (max-width: 600px) { .header-container h1 { font-size: 3.2rem; letter-spacing: 2px; } }
 
         .container { max-width: 1100px; margin: 0 auto; flex: 1; width: 100%; box-sizing: border-box; }
         
+        .top-bar-acciones { display: flex; justify-content: center; margin-bottom: 20px; }
+
         #contenedor-instalar {
             display: none;
             background: rgba(255, 255, 255, 0.2);
             backdrop-filter: blur(15px);
             border: 1px solid rgba(255,255,255,0.3);
-            padding: 15px;
-            border-radius: 20px;
-            margin-bottom: 20px;
+            padding: 12px 20px;
+            border-radius: 50px;
             text-align: center;
             color: white;
             font-weight: 600;
+            font-size: 14px;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
         }
+
         .btn-instalar-app {
             background: gold;
             color: #333;
             border: none;
-            padding: 12px 25px;
+            padding: 8px 20px;
             font-weight: 800;
             border-radius: 50px;
             cursor: pointer;
-            margin-top: 10px;
             text-transform: uppercase;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            font-size: 12px;
         }
 
         .tabs { display: flex; justify-content: center; gap: 8px; margin-bottom: 25px; flex-wrap: wrap; }
@@ -112,23 +112,11 @@
             text-transform: uppercase;
         }
         @media (min-width: 600px) { .tab-btn { flex: none; padding: 14px 35px; font-size: 15px; } }
-        .tab-btn.active {
-            background: #fff;
-            color: var(--color-azul);
-            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
-            border: none;
-        }
+        .tab-btn.active { background: #fff; color: var(--color-azul); box-shadow: 0 8px 20px rgba(0,0,0,0.3); border: none; }
 
         .seccion { 
-            background: var(--glass-bg); 
-            padding: 25px; 
-            border-radius: 24px; 
-            box-shadow: 0 15px 35px rgba(0,0,0,0.25); 
-            margin-bottom: 30px; 
-            display: none; 
-            box-sizing: border-box;
-            border: 1px solid rgba(255,255,255,0.5);
-            backdrop-filter: blur(5px);
+            background: var(--glass-bg); padding: 25px; border-radius: 24px; box-shadow: 0 15px 35px rgba(0,0,0,0.25); 
+            margin-bottom: 30px; display: none; box-sizing: border-box; border: 1px solid rgba(255,255,255,0.5); backdrop-filter: blur(5px);
         }
         .seccion.active { display: block; animation: slideUp 0.4s ease; }
 
@@ -139,24 +127,17 @@
         .lista-partidos { max-height: 550px; overflow-y: auto; padding: 5px; }
         
         .partido { 
-            display: flex; flex-direction: column; padding: 20px; 
-            background: white; margin-bottom: 14px; border-radius: 18px; 
-            gap: 15px; border: 1px solid #eee; transition: all 0.2s;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+            display: flex; flex-direction: column; padding: 20px; background: white; margin-bottom: 14px; border-radius: 18px; 
+            gap: 15px; border: 1px solid #eee; transition: all 0.2s; box-shadow: 0 4px 6px rgba(0,0,0,0.02);
         }
         .partido:hover { transform: translateY(-3px); box-shadow: 0 8px 15px rgba(0,0,0,0.08); }
         
-        @media (min-width: 650px) { 
-            .partido { flex-direction: row; justify-content: space-between; align-items: center; gap: 0; } 
-        }
+        @media (min-width: 650px) { .partido { flex-direction: row; justify-content: space-between; align-items: center; gap: 0; } }
 
         .info-partido { font-size: 11px; color: #999; text-transform: uppercase; font-weight: 800; letter-spacing: 1px; text-align: center; }
         @media (min-width: 650px) { .info-partido { width: 15%; text-align: left; } }
         
-        .equipo-bloque {
-            display: flex; align-items: center; gap: 14px; font-weight: 800; font-size: 16px; width: 100%; justify-content: center;
-            color: #2c3e50;
-        }
+        .equipo-bloque { display: flex; align-items: center; gap: 14px; font-weight: 800; font-size: 16px; width: 100%; justify-content: center; color: #2c3e50; }
         @media (min-width: 650px) {
             .equipo-bloque { width: 33%; }
             .equipo-bloque.local { justify-content: flex-end; text-align: right; }
@@ -168,9 +149,8 @@
         @media (min-width: 650px) { .marcador-container { width: 18%; } }
         .marcador { display: flex; justify-content: center; gap: 12px; align-items: center; }
         .marcador input { 
-            width: 48px; text-align: center; padding: 10px; font-size: 20px; 
-            border: 2px solid #eaedf0; border-radius: 12px; font-weight: 800; color: var(--color-azul);
-            background: #f8fafc;
+            width: 48px; text-align: center; padding: 10px; font-size: 20px; border: 2px solid #eaedf0; border-radius: 12px; 
+            font-weight: 800; color: var(--color-azul); background: #f8fafc;
         }
         
         .penaltis { font-size: 11px; color: var(--color-rojo); margin-top: 8px; font-weight: 800; text-transform: uppercase; }
@@ -179,14 +159,12 @@
         th { background: #2c3e50; color: white; padding: 15px; text-transform: uppercase; font-size: 12px; letter-spacing: 1px; }
         td { padding: 15px 10px; text-align: center; border-bottom: 1px solid #f1f1f1; font-size: 14px; font-weight: 500; }
         .clasificado-directo { background-color: #f0fff4 !important; color: #2f855a; font-weight: 700; }
+        .zona-espera { background-color: #fffde7 !important; }
         
         .btn-confirmar { 
-            display: block; width: 100%; padding: 18px; 
-            background: var(--color-rojo); color: white; border: none; 
-            border-radius: 50px; font-size: 16px; cursor: pointer; 
-            font-weight: 800; margin-top: 20px; text-transform: uppercase;
-            box-shadow: 0 10px 20px rgba(183, 28, 28, 0.4);
-            letter-spacing: 1px;
+            display: block; width: 100%; padding: 18px; background: var(--color-rojo); color: white; border: none; 
+            border-radius: 50px; font-size: 16px; cursor: pointer; font-weight: 800; margin-top: 20px; text-transform: uppercase;
+            box-shadow: 0 10px 20px rgba(183, 28, 28, 0.4); letter-spacing: 1px;
         }
         .btn-confirmar:hover { background: #961515; transform: scale(1.02); }
         .llave-container { display: flex; flex-direction: column; gap: 12px; max-width: 850px; margin: 0 auto; }
@@ -202,9 +180,11 @@
         <h1>FIFA UNITED 2026</h1>
     </div>
     
-    <div id="contenedor-instalar">
-        <span>🏆 ¡Vive la pasión del mundial! Instala la App ahora:</span><br>
-        <button class="btn-instalar-app" onclick="ejecutarInstalacion()">Instalar Aplicación</button>
+    <div class="top-bar-acciones">
+        <div id="contenedor-instalar">
+            <span>🏆 ¡Vive el mundial!</span>
+            <button class="btn-instalar-app" onclick="ejecutarInstalacion()">Instalar</button>
+        </div>
     </div>
 
     <div class="tabs">
@@ -236,20 +216,19 @@
 <footer>&copy; 2026 | ALONZO | FIFA UNITED 2026</footer>
 
 <script>
-if (!localStorage.getItem("mundial2026_v16_notificaciones")) {
+// Forzar ID limpio v22 definitivo para purgar cualquier conflicto de memoria vieja
+if (!localStorage.getItem("mundial2026_v22_final_rollback")) {
     localStorage.clear();
-    localStorage.setItem("mundial2026_v16_notificaciones", "true");
+    localStorage.setItem("mundial2022_v22_final_rollback", "true");
 }
 
 let regServiceWorker = null;
 
-// REGISTRO Y GESTIÓN DE NOTIFICACIONES
 if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
         navigator.serviceWorker.register('./sw.js')
             .then(reg => {
                 regServiceWorker = reg;
-                console.log('Service Worker listo');
                 solicitarPermisoNotificaciones();
             }).catch(err => console.log(err));
     });
@@ -259,9 +238,7 @@ function solicitarPermisoNotificaciones() {
     if ('Notification' in window) {
         Notification.requestPermission().then(permission => {
             if (permission === 'granted') {
-                console.log('Permiso de notificaciones concedido');
-                // Alerta de bienvenida de prueba
-                dispararNotificacionLocal("🏆 ¡FIFA UNITED 2026!", "Notificaciones activadas. Te avisaremos cuando ocurran eventos importantes.");
+                dispararNotificacionLocal("🏆 ¡FIFA UNITED 2026!", "Notificaciones locales listas para avisarte los cambios de ronda.");
             }
         });
     }
@@ -281,19 +258,13 @@ let eventoInstalacion;
 window.addEventListener('beforeinstallprompt', (e) => {
     e.preventDefault();
     eventoInstalacion = e;
-    document.getElementById('contenedor-instalar').style.display = 'block';
+    document.getElementById('contenedor-instalar').style.display = 'flex';
 });
 
 function ejecutarInstalacion() {
     if (!eventoInstalacion) return;
     eventoInstalacion.prompt();
     eventoInstalacion.userChoice.then(() => { eventoInstalacion = null; });
-}
-
-if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-        navigator.serviceWorker.register('./sw.js').catch(err => console.log(err));
-    });
 }
 
 const codigosBanderas = {
@@ -409,46 +380,9 @@ const configuracionMundial = {
     eliminatorias: { r16vos: [], octavos: [], cuartos: [], semis: [], final: [] }
 };
 
-let datosMundial = JSON.parse(localStorage.getItem("mundial2026_final_v16")) || configuracionMundial;
+// 🛡️ SE CORRIGIÓ: Si el localStorage local está vacío por fallas previas, se inyecta la configuración base por defecto de inmediato
+let datosMundial = JSON.parse(localStorage.getItem("mundial2026_final_v22")) || JSON.parse(JSON.stringify(configuracionMundial));
 let cacheEstadisticas = {};
-
-function cambiarPestaña(fase) {
-    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-    document.querySelectorAll('.seccion').forEach(s => s.classList.remove('active'));
-    const btnMap = { 'grupos': 0, 'r16vos': 1, 'octavos': 2, 'cuartos': 3, 'semis': 4, 'final': 5 };
-    document.querySelectorAll('.tab-btn')[btnMap[fase]].classList.add('active');
-    const secId = fase === 'grupos' ? 'sec-grupos' : `sec-${fase}`;
-    document.getElementById(secId).classList.add('active');
-    if (fase !== 'grupos') renderizarFaseEliminatoria(fase);
-}
-
-function guardarYCalcular() {
-    localStorage.setItem("mundial2026_final_v16", JSON.stringify(datosMundial));
-    calcularTablas();
-}
-
-function inicializarPartidosGrupos() {
-    const contenedor = document.getElementById("contenedor-partidos");
-    if (!contenedor) return;
-    contenedor.innerHTML = "";
-    datosMundial.partidos.forEach(p => {
-        const div = document.createElement("div");
-        div.className = "partido";
-        div.innerHTML = `
-            <div class="info-partido"><b>N° ${p.id}</b><br>${p.fecha}</div>
-            <div class="equipo-bloque local">${generarHTMLIdEquipo(p.local, true)}</div>
-            <div class="marcador-container">
-                <div class="marcador">
-                    <input type="number" min="0" value="${p.golesL}" onchange="actualizarGolesGrupo(${p.id}, 'L', this.value)">
-                    <span style="font-weight:900; color:#cbd5e1">VS</span>
-                    <input type="number" min="0" value="${p.golesV}" onchange="actualizarGolesGrupo(${p.id}, 'V', this.value)">
-                </div>
-            </div>
-            <div class="equipo-bloque visitante">${generarHTMLIdEquipo(p.visitante, false)}</div>
-        `;
-        contenedor.appendChild(div);
-    });
-}
 
 function actualizarGolesGrupo(id, tipo, valor) {
     const partido = datosMundial.partidos.find(p => p.id === id);
@@ -472,7 +406,7 @@ function calcularTablas() {
             if (el && ev) {
                 el.PJ++; ev.PJ++; el.GF += gL; el.GC += gV; ev.GF += gV; ev.GC += gL;
                 if (gL > gV) { el.G++; el.PTS += 3; ev.P++; }
-                else if (gV > gL) { ev.G++; el.PTS += 0; ev.PTS += 3; el.P++; }
+                else if (gV > gL) { ev.G++; ev.PTS += 3; el.P++; }
                 else { el.E++; el.PTS += 1; ev.E++; ev.PTS += 1; }
             }
         }
@@ -538,11 +472,9 @@ function avanzarADieciseisavos() {
         return { id: emp.id, local: emp.l || "Desconocido", visitante: emp.v || "Desconocido", golesL: ex?ex.golesL:"", golesV: ex?ex.golesV:"", ganadorPenaltis: ex?ex.ganadorPenaltis:"" };
     });
     if(datosMundial.eliminatorias.octavos.length === 0) inicializarRondasSiguientes();
-    localStorage.setItem("mundial2026_final_v16", JSON.stringify(datosMundial));
+    localStorage.setItem("mundial2026_final_v22", JSON.stringify(datosMundial));
     
-    // GATILLAR NOTIFICACIÓN LOCAL AL CAMBIAR DE ETAPA
     dispararNotificacionLocal("⚔️ ¡Fase de Grupos Cerrada!", "Los emparejamientos de Dieciseisavos de Final han sido calculados con éxito.");
-
     alert("🎉 ¡Emparejamientos de 2da Ronda Generados!");
     cambiarPestaña('r16vos');
 }
@@ -639,7 +571,7 @@ function actualizarGolesEliminatoria(fase, id, tipo, valor) {
         partido[tipo === 'L' ? 'golesL' : 'golesV'] = (valor === "") ? "" : parseInt(valor);
         if (partido.golesL !== partido.golesV) partido.ganadorPenaltis = "";
         encadenarSiguienteRonda(fase);
-        localStorage.setItem("mundial2026_final_v16", JSON.stringify(datosMundial));
+        localStorage.setItem("mundial2026_final_v22", JSON.stringify(datosMundial));
         renderizarFaseEliminatoria(fase);
     }
 }
@@ -649,8 +581,23 @@ function actualizarPenaltis(fase, id, winner) {
     if (partido) {
         partido.ganadorPenaltis = winner;
         encadenarSiguienteRonda(fase);
-        localStorage.setItem("mundial2026_final_v16", JSON.stringify(datosMundial));
+        localStorage.setItem("mundial2026_final_v22", JSON.stringify(datosMundial));
     }
+}
+
+function guardarYCalcular() {
+    localStorage.setItem("mundial2026_final_v22", JSON.stringify(datosMundial));
+    calcularTablas();
+}
+
+function cambiarPestaña(fase) {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.seccion').forEach(s => s.classList.remove('active'));
+    const btnMap = { 'grupos': 0, 'r16vos': 1, 'octavos': 2, 'cuartos': 3, 'semis': 4, 'final': 5 };
+    document.querySelectorAll('.tab-btn')[btnMap[fase]].classList.add('active');
+    const secId = fase === 'grupos' ? 'sec-grupos' : `sec-${fase}`;
+    document.getElementById(secId).classList.add('active');
+    if (fase !== 'grupos') renderizarFaseEliminatoria(fase);
 }
 
 window.onload = function() { inicializarPartidosGrupos(); calcularTablas(); };

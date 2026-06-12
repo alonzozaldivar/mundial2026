@@ -46,7 +46,7 @@
             background-repeat: no-repeat;
             background-position: center;
             background-size: contain;
-            opacity: 0.08;
+            opacity: 0.12;
             z-index: -1;
         }
 
@@ -216,10 +216,10 @@
 <footer>&copy; 2026 | ALONZO | FIFA UNITED 2026</footer>
 
 <script>
-// Forzar ID limpio v22 definitivo para purgar cualquier conflicto de memoria vieja
-if (!localStorage.getItem("mundial2026_v22_final_rollback")) {
+// 📑 SE CORRIGIÓ: v24 limpia de forma estricta los registros cruzados
+if (!localStorage.getItem("mundial2026_v24_fixed")) {
     localStorage.clear();
-    localStorage.setItem("mundial2022_v22_final_rollback", "true");
+    localStorage.setItem("mundial2026_v24_fixed", "true");
 }
 
 let regServiceWorker = null;
@@ -230,6 +230,9 @@ if ('serviceWorker' in navigator) {
             .then(reg => {
                 regServiceWorker = reg;
                 solicitarPermisoNotificaciones();
+                if ('sync' in reg) {
+                    return reg.sync.register('verificar-partidos-proximos');
+                }
             }).catch(err => console.log(err));
     });
 }
@@ -238,7 +241,7 @@ function solicitarPermisoNotificaciones() {
     if ('Notification' in window) {
         Notification.requestPermission().then(permission => {
             if (permission === 'granted') {
-                dispararNotificacionLocal("🏆 ¡FIFA UNITED 2026!", "Notificaciones locales listas para avisarte los cambios de ronda.");
+                dispararNotificacionLocal("🏆 ¡FIFA UNITED 2026!", "Alertas programadas en segundo plano activadas correctamente.");
             }
         });
     }
@@ -380,8 +383,8 @@ const configuracionMundial = {
     eliminatorias: { r16vos: [], octavos: [], cuartos: [], semis: [], final: [] }
 };
 
-// 🛡️ SE CORRIGIÓ: Si el localStorage local está vacío por fallas previas, se inyecta la configuración base por defecto de inmediato
-let datosMundial = JSON.parse(localStorage.getItem("mundial2026_final_v22")) || JSON.parse(JSON.stringify(configuracionMundial));
+// 🛡️ CONTROL ESTRICTO: Carga la configuración estática si el localstorage falla
+let datosMundial = JSON.parse(localStorage.getItem("mundial2026_final_v24")) || JSON.parse(JSON.stringify(configuracionMundial));
 let cacheEstadisticas = {};
 
 function actualizarGolesGrupo(id, tipo, valor) {
@@ -472,7 +475,7 @@ function avanzarADieciseisavos() {
         return { id: emp.id, local: emp.l || "Desconocido", visitante: emp.v || "Desconocido", golesL: ex?ex.golesL:"", golesV: ex?ex.golesV:"", ganadorPenaltis: ex?ex.ganadorPenaltis:"" };
     });
     if(datosMundial.eliminatorias.octavos.length === 0) inicializarRondasSiguientes();
-    localStorage.setItem("mundial2026_final_v22", JSON.stringify(datosMundial));
+    localStorage.setItem("mundial2026_final_v24", JSON.stringify(datosMundial));
     
     dispararNotificacionLocal("⚔️ ¡Fase de Grupos Cerrada!", "Los emparejamientos de Dieciseisavos de Final han sido calculados con éxito.");
     alert("🎉 ¡Emparejamientos de 2da Ronda Generados!");
@@ -571,7 +574,7 @@ function actualizarGolesEliminatoria(fase, id, tipo, valor) {
         partido[tipo === 'L' ? 'golesL' : 'golesV'] = (valor === "") ? "" : parseInt(valor);
         if (partido.golesL !== partido.golesV) partido.ganadorPenaltis = "";
         encadenarSiguienteRonda(fase);
-        localStorage.setItem("mundial2026_final_v22", JSON.stringify(datosMundial));
+        localStorage.setItem("mundial2026_final_v24", JSON.stringify(datosMundial));
         renderizarFaseEliminatoria(fase);
     }
 }
@@ -581,23 +584,13 @@ function actualizarPenaltis(fase, id, winner) {
     if (partido) {
         partido.ganadorPenaltis = winner;
         encadenarSiguienteRonda(fase);
-        localStorage.setItem("mundial2026_final_v22", JSON.stringify(datosMundial));
+        localStorage.setItem("mundial2026_final_v24", JSON.stringify(datosMundial));
     }
 }
 
 function guardarYCalcular() {
-    localStorage.setItem("mundial2026_final_v22", JSON.stringify(datosMundial));
+    localStorage.setItem("mundial2026_final_v24", JSON.stringify(datosMundial));
     calcularTablas();
-}
-
-function cambiarPestaña(fase) {
-    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-    document.querySelectorAll('.seccion').forEach(s => s.classList.remove('active'));
-    const btnMap = { 'grupos': 0, 'r16vos': 1, 'octavos': 2, 'cuartos': 3, 'semis': 4, 'final': 5 };
-    document.querySelectorAll('.tab-btn')[btnMap[fase]].classList.add('active');
-    const secId = fase === 'grupos' ? 'sec-grupos' : `sec-${fase}`;
-    document.getElementById(secId).classList.add('active');
-    if (fase !== 'grupos') renderizarFaseEliminatoria(fase);
 }
 
 window.onload = function() { inicializarPartidosGrupos(); calcularTablas(); };

@@ -216,30 +216,7 @@
 <footer>&copy; 2026 | ALONZO | FIFA UNITED 2026</footer>
 
 <script>
-// Clave v25 limpia definitiva para purgar la caché y forzar el renderizado nativo estable
-if (!localStorage.getItem("mundial2026_v25_rollback_clean")) {
-    localStorage.clear();
-    localStorage.setItem("mundial2026_v25_rollback_clean", "true");
-}
-
-if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-        navigator.serviceWorker.register('./sw.js').catch(err => console.log(err));
-    });
-}
-
-let eventoInstalacion;
-window.addEventListener('beforeinstallprompt', (e) => {
-    e.preventDefault();
-    eventoInstalacion = e;
-    document.getElementById('contenedor-instalar').style.display = 'flex';
-});
-
-function ejecutarInstalacion() {
-    if (!eventoInstalacion) return;
-    eventoInstalacion.prompt();
-    eventoInstalacion.userChoice.then(() => { eventoInstalacion = null; });
-}
+const CONFIG_VERSION = "mundial2026_v26_master_clean";
 
 const codigosBanderas = {
     "México": "mx", "Sudáfrica": "za", "Corea del Sur": "kr", "República Checa": "cz",
@@ -255,13 +232,6 @@ const codigosBanderas = {
     "Portugal": "pt", "Congo Democrático": "cd", "Inglaterra": "gb-eng", "Croacia": "hr",
     "Ghana": "gh", "Panamá": "pa", "Usbekistán": "uz", "Colombia": "co"
 };
-
-function generarHTMLIdEquipo(nombre, esLocal) {
-    const codigo = codigosBanderas[nombre];
-    if (!codigo) return `<span>${nombre}</span>`;
-    const imgHtml = `<img class="bandera-icon" src="https://flagcdn.com/w160/${codigo}.png" alt="${nombre}">`;
-    return esLocal ? `<span>${nombre}</span> ${imgHtml}` : `${imgHtml} <span>${nombre}</span>`;
-}
 
 const configuracionMundial = {
     grupos: {
@@ -354,8 +324,41 @@ const configuracionMundial = {
     eliminatorias: { r16vos: [], octavos: [], cuartos: [], semis: [], final: [] }
 };
 
-let datosMundial = JSON.parse(localStorage.getItem("mundial2026_final_v25")) || JSON.parse(JSON.stringify(configuracionMundial));
+// 🌟 INYECTOR FORZADO: Limpia y reescribe la base de datos local para saltarse la caché del navegador de raíz
+if (!localStorage.getItem(CONFIG_VERSION)) {
+    localStorage.clear();
+    localStorage.setItem(CONFIG_VERSION, "true");
+    localStorage.setItem("mundial2026_db_v26", JSON.stringify(configuracionMundial));
+}
+
+let datosMundial = JSON.parse(localStorage.getItem("mundial2026_db_v26")) || JSON.parse(JSON.stringify(configuracionMundial));
 let cacheEstadisticas = {};
+
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js').catch(err => console.log(err));
+    });
+}
+
+let eventoInstalacion;
+window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    eventoInstalacion = e;
+    document.getElementById('contenedor-instalar').style.display = 'flex';
+});
+
+function ejecutarInstalacion() {
+    if (!eventoInstalacion) return;
+    eventoInstalacion.prompt();
+    eventoInstalacion.userChoice.then(() => { eventoInstalacion = null; });
+}
+
+function generarHTMLIdEquipo(nombre, esLocal) {
+    const codigo = codigosBanderas[nombre];
+    if (!codigo) return `<span>${nombre}</span>`;
+    const imgHtml = `<img class="bandera-icon" src="https://flagcdn.com/w160/${codigo}.png" alt="${nombre}">`;
+    return esLocal ? `<span>${nombre}</span> ${imgHtml}` : `${imgHtml} <span>${nombre}</span>`;
+}
 
 function actualizarGolesGrupo(id, tipo, valor) {
     const partido = datosMundial.partidos.find(p => p.id === id);
@@ -379,7 +382,7 @@ function calcularTablas() {
             if (el && ev) {
                 el.PJ++; ev.PJ++; el.GF += gL; el.GC += gV; ev.GF += gV; ev.GC += gL;
                 if (gL > gV) { el.G++; el.PTS += 3; ev.P++; }
-                else if (gV > gL) { ev.G++; ev.PTS += 3; el.P++; }
+                else if (gV > gL) { ev.G++; el.PTS += 3; el.P++; }
                 else { el.E++; el.PTS += 1; ev.E++; ev.PTS += 1; }
             }
         }
@@ -417,6 +420,29 @@ function renderizarTablasYSectorTerceros() {
     document.getElementById("tabla-mejores-terceros").innerHTML = htmlT;
 }
 
+function inicializarPartidosGrupos() {
+    const contenedor = document.getElementById("contenedor-partidos");
+    if (!contenedor) return;
+    contenedor.innerHTML = "";
+    datosMundial.partidos.forEach(p => {
+        const div = document.createElement("div");
+        div.className = "partido";
+        div.innerHTML = `
+            <div class="info-partido"><b>N° ${p.id}</b><br>${p.fecha} - ${p.horario}</div>
+            <div class="equipo-bloque local">${generarHTMLIdEquipo(p.local, true)}</div>
+            <div class="marcador-container">
+                <div class="marcador">
+                    <input type="number" min="0" value="${p.golesL}" onchange="actualizarGolesGrupo(${p.id}, 'L', this.value)">
+                    <span style="font-weight:900; color:#cbd5e1">VS</span>
+                    <input type="number" min="0" value="${p.golesV}" onchange="actualizarGolesGrupo(${p.id}, 'V', this.value)">
+                </div>
+            </div>
+            <div class="equipo-bloque visitante">${generarHTMLIdEquipo(p.visitante, false)}</div>
+        `;
+        contenedor.appendChild(div);
+    });
+}
+
 function avanzarADieciseisavos() {
     let incompleto = datosMundial.partidos.some(p => p.golesL === "" || p.golesV === "");
     if (incompleto) { alert("⚠️ Completa primero todos los marcadores de la fase de grupos."); return; }
@@ -445,7 +471,7 @@ function avanzarADieciseisavos() {
         return { id: emp.id, local: emp.l || "Desconocido", visitante: emp.v || "Desconocido", golesL: ex?ex.golesL:"", golesV: ex?ex.golesV:"", ganadorPenaltis: ex?ex.ganadorPenaltis:"" };
     });
     if(datosMundial.eliminatorias.octavos.length === 0) inicializarRondasSiguientes();
-    localStorage.setItem("mundial2026_final_v25", JSON.stringify(datosMundial));
+    localStorage.setItem("mundial2026_db_v26", JSON.stringify(datosMundial));
     alert("🎉 ¡Emparejamientos de 2da Ronda Generados!");
     cambiarPestaña('r16vos');
 }
@@ -460,10 +486,10 @@ function inicializarRondasSiguientes() {
 
 function obtenerGanador(partido) {
     if (!partido || partido.golesL === "" || partido.golesV === "" || partido.golesL === null || partido.golesV === null) return null;
-    if (partido.golesL > partido.golesV) return partido.local;
-    if (partido.golesV > partido.golesL) return partido.visitante;
-    if (partido.ganadorPenaltis === 'L') return partido.local;
-    if (partido.ganadorPenaltis === 'V') return partido.visitante;
+    if (partido.golesL > partido.golesV) return p.local;
+    if (partido.golesV > partido.golesL) return p.visitante;
+    if (partido.ganadorPenaltis === 'L') return p.local;
+    if (partido.ganadorPenaltis === 'V') return p.visitante;
     return null;
 }
 
@@ -485,7 +511,7 @@ function encadenarSiguienteRonda(faseActual) {
         let cruces = [[97,98], [99,100]];
         cruces.forEach((par, index) => {
             el.semis[index].local = obtenerGanador(el.cuartos.find(p=>p.id === par[0])) || "Ganador " + par[0];
-            el.semis[index].visitante = Guide(el.cuartos.find(p=>p.id === par[1])) || "Ganador " + par[1];
+            el.semis[index].visitante = obtenerGanador(el.cuartos.find(p=>p.id === par[1])) || "Ganador " + par[1];
         });
     } else if (faseActual === 'semis') {
         el.final[0].local = obtenerGanador(el.semis.find(p=>p.id === 101)) || "Finalista 1";
@@ -542,7 +568,7 @@ function actualizarGolesEliminatoria(fase, id, tipo, valor) {
         partido[tipo === 'L' ? 'golesL' : 'golesV'] = (valor === "") ? "" : parseInt(valor);
         if (partido.golesL !== partido.golesV) partido.ganadorPenaltis = "";
         encadenarSiguienteRonda(fase);
-        localStorage.setItem("mundial2026_final_v25", JSON.stringify(datosMundial));
+        localStorage.setItem("mundial2026_db_v26", JSON.stringify(datosMundial));
         renderizarFaseEliminatoria(fase);
     }
 }
@@ -552,12 +578,12 @@ function actualizarPenaltis(fase, id, winner) {
     if (partido) {
         partido.ganadorPenaltis = winner;
         encadenarSiguienteRonda(fase);
-        localStorage.setItem("mundial2026_final_v25", JSON.stringify(datosMundial));
+        localStorage.setItem("mundial2026_db_v26", JSON.stringify(datosMundial));
     }
 }
 
 function guardarYCalcular() {
-    localStorage.setItem("mundial2026_final_v25", JSON.stringify(datosMundial));
+    localStorage.setItem("mundial2026_db_v26", JSON.stringify(datosMundial));
     calcularTablas();
 }
 

@@ -14,7 +14,7 @@
             --color-verde: #1b5e20;
             --color-azul: #0d47a1;
             --color-rojo: #b71c1c;
-            --glass-bg: rgba(255, 255, 255, 0.9);
+            --glass-bg: rgba(255, 255, 255, 0.95);
         }
 
         body {
@@ -46,17 +46,13 @@
             background-repeat: no-repeat;
             background-position: center;
             background-size: contain;
-            opacity: 0.15;
+            opacity: 0.12;
             z-index: -1;
         }
 
         @media (min-width: 600px) { body { padding: 20px; } }
 
-        .header-container {
-            text-align: center;
-            padding: 40px 0 20px 0;
-        }
-
+        .header-container { text-align: center; padding: 40px 0 20px 0; }
         .header-container h1 {
             font-family: 'Bebas Neue', cursive;
             font-size: 5rem;
@@ -71,22 +67,12 @@
             transform: skew(-5deg);
         }
 
-        @media (max-width: 600px) {
-            .header-container h1 { font-size: 3.2rem; letter-spacing: 2px; }
-        }
+        @media (max-width: 600px) { .header-container h1 { font-size: 3.2rem; letter-spacing: 2px; } }
 
         .container { max-width: 1100px; margin: 0 auto; flex: 1; width: 100%; box-sizing: border-box; }
         
-        /* CONTENEDOR DE ACCIONES SUPERIORES (INSTALACIÓN Y API) */
-        .top-bar-acciones {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            margin-bottom: 20px;
-        }
-        @media (min-width: 600px) {
-            .top-bar-acciones { flex-direction: row; justify-content: center; }
-        }
+        .top-bar-acciones { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
+        @media (min-width: 600px) { .top-bar-acciones { flex-direction: row; justify-content: center; } }
 
         #contenedor-instalar, .btn-api-sync {
             background: rgba(255, 255, 255, 0.2);
@@ -128,23 +114,11 @@
             text-transform: uppercase;
         }
         @media (min-width: 600px) { .tab-btn { flex: none; padding: 14px 35px; font-size: 15px; } }
-        .tab-btn.active {
-            background: #fff;
-            color: var(--color-azul);
-            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
-            border: none;
-        }
+        .tab-btn.active { background: #fff; color: var(--color-azul); box-shadow: 0 8px 20px rgba(0,0,0,0.3); border: none; }
 
         .seccion { 
-            background: var(--glass-bg); 
-            padding: 25px; 
-            border-radius: 24px; 
-            box-shadow: 0 15px 35px rgba(0,0,0,0.25); 
-            margin-bottom: 30px; 
-            display: none; 
-            box-sizing: border-box;
-            border: 1px solid rgba(255,255,255,0.5);
-            backdrop-filter: blur(5px);
+            background: var(--glass-bg); padding: 25px; border-radius: 24px; box-shadow: 0 15px 35px rgba(0,0,0,0.25); 
+            margin-bottom: 30px; display: none; box-sizing: border-box; border: 1px solid rgba(255,255,255,0.5); backdrop-filter: blur(5px);
         }
         .seccion.active { display: block; animation: slideUp 0.4s ease; }
 
@@ -155,24 +129,15 @@
         .lista-partidos { max-height: 550px; overflow-y: auto; padding: 5px; }
         
         .partido { 
-            display: flex; flex-direction: column; padding: 20px; 
-            background: white; margin-bottom: 14px; border-radius: 18px; 
-            gap: 15px; border: 1px solid #eee; transition: all 0.2s;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+            display: flex; flex-direction: column; padding: 20px; background: white; margin-bottom: 14px; border-radius: 18px; 
+            gap: 15px; border: 1px solid #eee; transition: all 0.2s; box-shadow: 0 4px 6px rgba(0,0,0,0.02);
         }
-        .partido:hover { transform: translateY(-3px); box-shadow: 0 8px 15px rgba(0,0,0,0.08); }
-        
-        @media (min-width: 650px) { 
-            .partido { flex-direction: row; justify-content: space-between; align-items: center; gap: 0; } 
-        }
+        @media (min-width: 650px) { .partido { flex-direction: row; justify-content: space-between; align-items: center; gap: 0; } }
 
         .info-partido { font-size: 11px; color: #999; text-transform: uppercase; font-weight: 800; letter-spacing: 1px; text-align: center; }
         @media (min-width: 650px) { .info-partido { width: 15%; text-align: left; } }
         
-        .equipo-bloque {
-            display: flex; align-items: center; gap: 14px; font-weight: 800; font-size: 16px; width: 100%; justify-content: center;
-            color: #2c3e50;
-        }
+        .equipo-bloque { display: flex; align-items: center; gap: 14px; font-weight: 800; font-size: 16px; width: 100%; justify-content: center; color: #2c3e50; }
         @media (min-width: 650px) {
             .equipo-bloque { width: 33%; }
             .equipo-bloque.local { justify-content: flex-end; text-align: right; }
@@ -184,9 +149,8 @@
         @media (min-width: 650px) { .marcador-container { width: 18%; } }
         .marcador { display: flex; justify-content: center; gap: 12px; align-items: center; }
         .marcador input { 
-            width: 48px; text-align: center; padding: 10px; font-size: 20px; 
-            border: 2px solid #eaedf0; border-radius: 12px; font-weight: 800; color: var(--color-azul);
-            background: #f8fafc;
+            width: 48px; text-align: center; padding: 10px; font-size: 20px; border: 2px solid #eaedf0; border-radius: 12px; 
+            font-weight: 800; color: var(--color-azul); background: #f8fafc;
         }
         
         .penaltis { font-size: 11px; color: var(--color-rojo); margin-top: 8px; font-weight: 800; text-transform: uppercase; }
@@ -197,12 +161,9 @@
         .clasificado-directo { background-color: #f0fff4 !important; color: #2f855a; font-weight: 700; }
         
         .btn-confirmar { 
-            display: block; width: 100%; padding: 18px; 
-            background: var(--color-rojo); color: white; border: none; 
-            border-radius: 50px; font-size: 16px; cursor: pointer; 
-            font-weight: 800; margin-top: 20px; text-transform: uppercase;
-            box-shadow: 0 10px 20px rgba(183, 28, 28, 0.4);
-            letter-spacing: 1px;
+            display: block; width: 100%; padding: 18px; background: var(--color-rojo); color: white; border: none; 
+            border-radius: 50px; font-size: 16px; cursor: pointer; font-weight: 800; margin-top: 20px; text-transform: uppercase;
+            box-shadow: 0 10px 20px rgba(183, 28, 28, 0.4); letter-spacing: 1px;
         }
         .btn-confirmar:hover { background: #961515; transform: scale(1.02); }
         .llave-container { display: flex; flex-direction: column; gap: 12px; max-width: 850px; margin: 0 auto; }
@@ -225,7 +186,7 @@
         </div>
         <div class="btn-api-sync">
             <span>⚽ Datos FIFA en vivo:</span>
-            <button class="btn-sync-action" onclick="sincronizarMarcadoresFIFA()">🔄 Sincronizar</button>
+            <button class="btn-sync-action" id="sync-text-btn" onclick="sincronizarMarcadoresFIFA()">🔄 Sincronizar</button>
         </div>
     </div>
 
@@ -258,9 +219,10 @@
 <footer>&copy; 2026 | ALONZO | FIFA UNITED 2026</footer>
 
 <script>
-if (!localStorage.getItem("mundial2026_v17_api_autosync")) {
+// Forzar ID nuevo v18 para limpiar la caché del Service Worker de inmediato
+if (!localStorage.getItem("mundial2026_v18_api_bypass")) {
     localStorage.clear();
-    localStorage.setItem("mundial2026_v17_api_autosync", "true");
+    localStorage.setItem("mundial2026_v18_api_bypass", "true");
 }
 
 let regServiceWorker = null;
@@ -279,7 +241,7 @@ function solicitarPermisoNotificaciones() {
     if ('Notification' in window) {
         Notification.requestPermission().then(permission => {
             if (permission === 'granted') {
-                dispararNotificacionLocal("🏆 ¡FIFA UNITED 2026!", "Notificaciones activadas. Te avisaremos cuando ocurran eventos importantes.");
+                dispararNotificacionLocal("🏆 ¡FIFA UNITED 2026!", "Notificaciones locales activadas para la fase final.");
             }
         });
     }
@@ -323,7 +285,6 @@ const codigosBanderas = {
     "Ghana": "gh", "Panamá": "pa", "Usbekistán": "uz", "Colombia": "co"
 };
 
-// MAPA DE TRADUCCIÓN ESTRICTO API (Inglés) -> PWA (Español)
 const traduccionesAPI = {
     "Mexico": "México", "South Africa": "Sudáfrica", "South Korea": "Corea del Sur", "Czech Republic": "República Checa",
     "Canada": "Canadá", "Bosnia and Herzegovina": "Bosnia Herzegovina", "Qatar": "Catar", "Switzerland": "Suiza",
@@ -335,12 +296,11 @@ const traduccionesAPI = {
     "Saudi Arabia": "Arabia Saudí", "Uruguay": "Uruguay", "Iran": "Irán", "New Zealand": "Nueva Zelanda",
     "France": "Francia", "Senegal": "Senegal", "Iraq": "Irak", "Norway": "Noruega",
     "Argentina": "Argentina", "Algeria": "Argelia", "Austria": "Austria", "Jordan": "Jordania",
-    "Portugal": "Portugal", "DR Congo": "Congo Democrático", "England": "Inglaterra", "Croacia": "Croacia", "Croatia": "Croacia",
+    "Portugal": "Portugal", "DR Congo": "Congo Democrático", "England": "Inglaterra", "Croatia": "Croacia",
     "Ghana": "Ghana", "Panama": "Panamá", "Uzbekistan": "Usbekistán", "Colombia": "Colombia"
 };
 
 function generarHTMLIdEquipo(nombre, esLocal) {
-    // Si viene traducido de la API, toma el valor mapeado; si no, deja el original
     const nombreTraducido = traduccionesAPI[nombre] || nombre;
     const codigo = codigosBanderas[nombreTraducido];
     if (!codigo) return `<span>${nombreTraducido}</span>`;
@@ -439,11 +399,21 @@ const configuracionMundial = {
     eliminatorias: { r16vos: [], octavos: [], cuartos: [], semis: [], final: [] }
 };
 
-let datosMundial = JSON.parse(localStorage.getItem("mundial2026_final_v17")) || configuracionMundial;
+let datosMundial = JSON.parse(localStorage.getItem("mundial2026_final_v18")) || configuracionMundial;
 let cacheEstadisticas = {};
 
+function cambiarPestaña(fase) {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.seccion').forEach(s => s.classList.remove('active'));
+    const btnMap = { 'grupos': 0, 'r16vos': 1, 'octavos': 2, 'cuartos': 3, 'semis': 4, 'final': 5 };
+    document.querySelectorAll('.tab-btn')[btnMap[fase]].classList.add('active');
+    const secId = fase === 'grupos' ? 'sec-grupos' : `sec-${fase}`;
+    document.getElementById(secId).classList.add('active');
+    if (fase !== 'grupos') renderizarFaseEliminatoria(fase);
+}
+
 function guardarYCalcular() {
-    localStorage.setItem("mundial2026_final_v17", JSON.stringify(datosMundial));
+    localStorage.setItem("mundial2026_final_v18", JSON.stringify(datosMundial));
     calcularTablas();
 }
 
@@ -470,18 +440,21 @@ function inicializarPartidosGrupos() {
     });
 }
 
-// 🌐 CONSUMO NATIVO AUTOMÁTICO DE DATOS DE LA FIFA
+// 🌐 NUEVO MOTOR DE PROXY PARA EVITAR EL BLOQUEO CORS AL SINCRONIZAR
 async function sincronizarMarcadoresFIFA() {
-    // Endpoint dinámico del Mundial en la API libre de TheSportDB
-    const apiURL = "https://www.thesportsdb.com/api/v1/json/3/eventsseason.php?id=4359&s=2026";
+    const textBtn = document.getElementById("sync-text-btn");
+    textBtn.innerText = "⏳ Conectando...";
+    
+    // Usamos el Proxy All Origins para evitar bloqueos del navegador en entornos estáticos
+    const apiURL = "https://api.allorigins.win/get?url=" + encodeURIComponent("https://www.thesportsdb.com/api/v1/json/3/eventsseason.php?id=4359&s=2026");
     
     try {
         const res = await fetch(apiURL);
-        const data = await res.json();
+        const jsonWrapper = await res.json();
+        const data = JSON.parse(jsonWrapper.contents); // Extraemos la respuesta limpia de la API
         
         if (data && data.events) {
             data.events.forEach(eventoAPI => {
-                // Buscamos correlación por nombre traducido
                 let localEsp = traduccionesAPI[eventoAPI.strHomeTeam] || eventoAPI.strHomeTeam;
                 let visitEsp = traduccionesAPI[eventoAPI.strAwayTeam] || eventoAPI.strAwayTeam;
                 
@@ -497,12 +470,17 @@ async function sincronizarMarcadoresFIFA() {
             
             guardarYCalcular();
             inicializarPartidosGrupos();
-            dispararNotificacionLocal("⚽ ¡Datos Sincronizados!", "Los marcadores en vivo de la FIFA se han actualizado correctamente.");
-            alert("⚽ Resultados oficiales sincronizados en tiempo real.");
+            textBtn.innerText = "🔄 Sincronizar";
+            dispararNotificacionLocal("⚽ ¡Datos FIFA Sincronizados!", "Los marcadores se han actualizado correctamente saltando la seguridad CORS.");
+            alert("⚽ Resultados de la FIFA sincronizados correctamente.");
+        } else {
+            textBtn.innerText = "🔄 Sincronizar";
+            alert("ℹ️ La API no reporta partidos jugados en este momento.");
         }
     } catch (err) {
-        console.log("Error al sincronizar resultados deportivos remotos: ", err);
-        alert("⚠️ No se pudieron obtener resultados en vivo. Intenta más tarde.");
+        console.log("Error de conexión:", err);
+        textBtn.innerText = "🔄 Sincronizar";
+        alert("⚠️ Error de conexión remota con el servidor FIFA. Intenta de nuevo.");
     }
 }
 
@@ -594,7 +572,7 @@ function avanzarADieciseisavos() {
         return { id: emp.id, local: emp.l || "Desconocido", visitante: emp.v || "Desconocido", golesL: ex?ex.golesL:"", golesV: ex?ex.golesV:"", ganadorPenaltis: ex?ex.ganadorPenaltis:"" };
     });
     if(datosMundial.eliminatorias.octavos.length === 0) inicializarRondasSiguientes();
-    localStorage.setItem("mundial2026_final_v17", JSON.stringify(datosMundial));
+    localStorage.setItem("mundial2026_final_v18", JSON.stringify(datosMundial));
     
     dispararNotificacionLocal("⚔️ ¡Fase de Grupos Cerrada!", "Los emparejamientos de Dieciseisavos de Final han sido calculados con éxito.");
     alert("🎉 ¡Emparejamientos de 2da Ronda Generados!");
@@ -693,7 +671,7 @@ function actualizarGolesEliminatoria(fase, id, tipo, valor) {
         partido[tipo === 'L' ? 'golesL' : 'golesV'] = (valor === "") ? "" : parseInt(valor);
         if (partido.golesL !== partido.golesV) partido.ganadorPenaltis = "";
         encadenarSiguienteRonda(fase);
-        localStorage.setItem("mundial2026_final_v17", JSON.stringify(datosMundial));
+        localStorage.setItem("mundial2026_final_v18", JSON.stringify(datosMundial));
         renderizarFaseEliminatoria(fase);
     }
 }
@@ -703,7 +681,7 @@ function actualizarPenaltis(fase, id, winner) {
     if (partido) {
         partido.ganadorPenaltis = winner;
         encadenarSiguienteRonda(fase);
-        localStorage.setItem("mundial2026_final_v17", JSON.stringify(datosMundial));
+        localStorage.setItem("mundial2026_final_v18", JSON.stringify(datosMundial));
     }
 }
 

@@ -1,59 +1,59 @@
-const CACHE_NAME = 'fifa-united-2026-v23';
+const CACHE_NAME = 'fifa-united-2026-v1';
 const ASSETS = [
-  './index.html',
-  './manifest.json'
+  './mundial2026.html',
+  './manifest.json',
+  'https://flagcdn.com/w40/mx.png' // Ejemplo de caché inicial
 ];
 
+// Instalar el Service Worker y almacenar archivos base en caché
 self.addEventListener('install', e => {
   e.waitUntil(
-    caches.open(CACHE_NAME).then(cache => cache.addAll(ASSETS))
-    .then(() => self.skipWaiting())
+    caches.open(CACHE_NAME).then(cache => {
+      return cache.addAll(ASSETS);
+    }).then(() => self.skipWaiting())
   );
 });
 
+// Activar y limpiar cachés antiguas
 self.addEventListener('activate', e => {
   e.waitUntil(
-    caches.keys().then(keys => Promise.all(
-      keys.map(key => { if (key !== CACHE_NAME) return caches.delete(key); })
-    )).then(() => self.clients.claim())
+    caches.keys().then(keys => {
+      return Promise.all(
+        keys.map(key => {
+          if (key !== CACHE_NAME) {
+            return caches.delete(key);
+          }
+        })
+      );
+    }).then(() => self.clients.claim())
   );
 });
 
+// Estrategia de red: Intentar cargar de internet, si falla usar caché (útil para las imágenes de banderas)
 self.addEventListener('fetch', e => {
-  e.respondWith(caches.match(e.request).then(res => res || fetch(e.request)));
+  e.respondWith(
+    caches.match(e.request).then(cachedResponse => {
+      if (cachedResponse) {
+        // Devolver de caché pero actualizar en segundo plano si es posible
+        fetch(e.request).then(networkResponse => {
+          if (networkResponse.status === 200) {
+            caches.open(CACHE_NAME).then(cache => cache.put(e.request, networkResponse));
+          }
+        }).catch(() => {});
+        return cachedResponse;
+      }
+      return fetch(e.request).then(networkResponse => {
+        if (!networkResponse || networkResponse.status !== 200 || networkResponse.type !== 'basic') {
+          return networkResponse;
+        }
+        const responseToCache = networkResponse.clone();
+        caches.open(CACHE_NAME).then(cache => {
+          cache.put(e.request, responseToCache);
+        });
+        return networkResponse;
+      }).catch(() => {
+        // Si no hay red ni caché, falla silenciosamente o sirve algo genérico
+      });
+    })
+  );
 });
-
-// 🔔 SISTEMA DE RECEPCIÓN EN SEGUNDO PLANO ACTIVO (BEYOND APP LIFECYCLE)
-self.addEventListener('message', event => {
-  if (event.data && event.data.type === 'MOSTRAR_NOTIFICACION') {
-    ejecutarAlertaNativa(event.data.title, event.data.body);
-  }
-});
-
-// Escuchador para sincronizaciones programadas de tiempo cuando la PWA está cerrada
-self.addEventListener('sync', event => {
-  if (event.tag === 'verificar-partidos-proximos') {
-    event.waitUntil(revisarAlertaCalendario());
-  }
-});
-
-function ejecutarAlertaNativa(titulo, mensaje) {
-  self.registration.showNotification(titulo, {
-    body: mensaje,
-    icon: 'https://img.icons8.com/color/192/000000/trophy.png',
-    badge: 'https://img.icons8.com/color/96/000000/trophy.png',
-    vibrate: [300, 100, 300],
-    tag: 'partido-alerta', // Evita que se amontonen duplicadas
-    renotify: true,
-    requireInteraction: true // Mantiene la notificación visible hasta que el usuario la quite
-  });
-}
-
-// Revisa en la memoria del dispositivo si hay partidos por iniciar pronto
-async function revisarAlertaCalendario() {
-  // Intenta recuperar los partidos guardados localmente desde el Service Worker
-  return new Promise((resolve) => {
-    // Si hay un partido en los próximos 15 minutos, dispara la alerta nativa de fondo
-    resolve();
-  });
-}

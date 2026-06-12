@@ -159,6 +159,7 @@
         th { background: #2c3e50; color: white; padding: 15px; text-transform: uppercase; font-size: 12px; letter-spacing: 1px; }
         td { padding: 15px 10px; text-align: center; border-bottom: 1px solid #f1f1f1; font-size: 14px; font-weight: 500; }
         .clasificado-directo { background-color: #f0fff4 !important; color: #2f855a; font-weight: 700; }
+        .zona-espera { background-color: #fffde7 !important; }
         
         .btn-confirmar { 
             display: block; width: 100%; padding: 18px; background: var(--color-rojo); color: white; border: none; 
@@ -219,7 +220,7 @@
 <footer>&copy; 2026 | ALONZO | FIFA UNITED 2026</footer>
 
 <script>
-// Forzar ID nuevo v18 para limpiar la caché del Service Worker de inmediato
+// Forzar ID nuevo v18 para refrescar el almacenamiento del navegador al vuelo
 if (!localStorage.getItem("mundial2026_v18_api_bypass")) {
     localStorage.clear();
     localStorage.setItem("mundial2026_v18_api_bypass", "true");
@@ -359,7 +360,7 @@ const configuracionMundial = {
         { id: 33, fecha: "20 Jun", horario: "11:00", local: "Holanda", visitante: "Suecia", golesL: "", golesV: "" },
         { id: 34, fecha: "20 Jun", horario: "14:00", local: "Alemania", visitante: "Costa de Marfil", golesL: "", golesV: "" },
         { id: 35, fecha: "20 Jun", horario: "18:00", local: "Ecuador", visitante: "Curasao", golesL: "", golesV: "" },
-        { id: 36, fecha: "20 Jun", horario: "22:00", local: "Túnez", visitante: "Japón", golesL: "", golesV: "" },
+        { id: 36, height: "auto", local: "Túnez", visitante: "Japón", golesL: "", golesV: "" },
         { id: 37, fecha: "21 Jun", horario: "10:00", local: "España", visitante: "Arabia Saudita", golesL: "", golesV: "" },
         { id: 38, fecha: "21 Jun", horario: "13:00", local: "Bélgica", visitante: "Irán", golesL: "", golesV: "" },
         { id: 39, fecha: "21 Jun", horario: "16:00", local: "Uruguay", visitante: "Cabo Verde", golesL: "", golesV: "" },
@@ -440,21 +441,45 @@ function inicializarPartidosGrupos() {
     });
 }
 
-// 🌐 NUEVO MOTOR DE PROXY PARA EVITAR EL BLOQUEO CORS AL SINCRONIZAR
+// 🌐 MOTOR DE ACTUALIZACIÓN CON DOBLE PROXY (SISTEMA DE CONTINGENCIA)
 async function sincronizarMarcadoresFIFA() {
     const textBtn = document.getElementById("sync-text-btn");
     textBtn.innerText = "⏳ Conectando...";
     
-    // Usamos el Proxy All Origins para evitar bloqueos del navegador en entornos estáticos
-    const apiURL = "https://api.allorigins.win/get?url=" + encodeURIComponent("https://www.thesportsdb.com/api/v1/json/3/eventsseason.php?id=4359&s=2026");
+    const urlOriginal = "https://www.thesportsdb.com/api/v1/json/3/eventsseason.php?id=4359&s=2026";
     
+    const proxies = [
+        "https://api.allorigins.win/get?url=" + encodeURIComponent(urlOriginal),
+        "https://corsproxy.io/?" + encodeURIComponent(urlOriginal)
+    ];
+
+    let datosCrudos = null;
+    let exitoConexion = false;
+
     try {
-        const res = await fetch(apiURL);
-        const jsonWrapper = await res.json();
-        const data = JSON.parse(jsonWrapper.contents); // Extraemos la respuesta limpia de la API
-        
-        if (data && data.events) {
-            data.events.forEach(eventoAPI => {
+        console.log("Intentando conectar con Proxy 1...");
+        let res = await fetch(proxies[0]);
+        let jsonWrapper = await res.json();
+        datosCrudos = JSON.parse(jsonWrapper.contents);
+        if (datosCrudos) exitoConexion = true;
+    } catch (err) {
+        console.warn("Proxy 1 saturado. Intentando Proxy 2...", err);
+    }
+
+    if (!exitoConexion) {
+        try {
+            console.log("Intentando conectar con Proxy 2...");
+            let res = await fetch(proxies[1]);
+            datosCrudos = await res.json();
+            if (datosCrudos) exitoConexion = true;
+        } catch (err) {
+            console.error("Ambos proxies fallaron.", err);
+        }
+    }
+
+    if (exitoConexion && datosCrudos && datosCrudos.events) {
+        try {
+            datosCrudos.events.forEach(eventoAPI => {
                 let localEsp = traduccionesAPI[eventoAPI.strHomeTeam] || eventoAPI.strHomeTeam;
                 let visitEsp = traduccionesAPI[eventoAPI.strAwayTeam] || eventoAPI.strAwayTeam;
                 
@@ -471,16 +496,16 @@ async function sincronizarMarcadoresFIFA() {
             guardarYCalcular();
             inicializarPartidosGrupos();
             textBtn.innerText = "🔄 Sincronizar";
-            dispararNotificacionLocal("⚽ ¡Datos FIFA Sincronizados!", "Los marcadores se han actualizado correctamente saltando la seguridad CORS.");
+            dispararNotificacionLocal("⚽ ¡Datos FIFA Sincronizados!", "Los marcadores se han actualizado correctamente usando la red de respaldo.");
             alert("⚽ Resultados de la FIFA sincronizados correctamente.");
-        } else {
+        } catch (processingError) {
+            console.error("Error al procesar el mapeo de goles:", processingError);
             textBtn.innerText = "🔄 Sincronizar";
-            alert("ℹ️ La API no reporta partidos jugados en este momento.");
+            alert("⚠️ Los datos se descargaron pero hubo un problema al acomodar los goles.");
         }
-    } catch (err) {
-        console.log("Error de conexión:", err);
+    } else {
         textBtn.innerText = "🔄 Sincronizar";
-        alert("⚠️ Error de conexión remota con el servidor FIFA. Intenta de nuevo.");
+        alert("⚠️ Los servidores de datos están saturados por el tráfico del Mundial. Por favor, intenta de nuevo en unos minutos.");
     }
 }
 
@@ -511,7 +536,7 @@ function calcularTablas() {
             }
         }
     });
-    renderizarTablasYSectorTerceros();
+    renderizarTablasYSector Terceros();
 }
 
 function renderizarTablasYSectorTerceros() {

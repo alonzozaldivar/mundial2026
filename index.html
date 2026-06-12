@@ -216,8 +216,6 @@
 <footer>&copy; 2026 | ALONZO | FIFA UNITED 2026</footer>
 
 <script>
-const CONFIG_VERSION = "mundial2026_v26_master_clean";
-
 const codigosBanderas = {
     "México": "mx", "Sudáfrica": "za", "Corea del Sur": "kr", "República Checa": "cz",
     "Canadá": "ca", "Bosnia Herzegovina": "ba", "Catar": "qa", "Suiza": "ch",
@@ -324,14 +322,18 @@ const configuracionMundial = {
     eliminatorias: { r16vos: [], octavos: [], cuartos: [], semis: [], final: [] }
 };
 
-// 🌟 INYECTOR FORZADO: Limpia y reescribe la base de datos local para saltarse la caché del navegador de raíz
-if (!localStorage.getItem(CONFIG_VERSION)) {
+// 💎 REESTRUCTURACIÓN MAESTRA DE DATOS NATIVOS LOCALES
+// Forzamos al script a limpiar cualquier base de datos vieja corrupta e inyectar el JSON de partidos real
+const VER_KEY = "mundial2026_v26_definitivo";
+let localDB = localStorage.getItem("mundial2026_db_v26");
+
+if (!localStorage.getItem(VER_KEY) || !localDB || localDB.includes("null") || JSON.parse(localDB).partidos.length === 0) {
     localStorage.clear();
-    localStorage.setItem(CONFIG_VERSION, "true");
+    localStorage.setItem(VER_KEY, "true");
     localStorage.setItem("mundial2026_db_v26", JSON.stringify(configuracionMundial));
 }
 
-let datosMundial = JSON.parse(localStorage.getItem("mundial2026_db_v26")) || JSON.parse(JSON.stringify(configuracionMundial));
+let datosMundial = JSON.parse(localStorage.getItem("mundial2026_db_v26"));
 let cacheEstadisticas = {};
 
 if ('serviceWorker' in navigator) {
@@ -382,7 +384,7 @@ function calcularTablas() {
             if (el && ev) {
                 el.PJ++; ev.PJ++; el.GF += gL; el.GC += gV; ev.GF += gV; ev.GC += gL;
                 if (gL > gV) { el.G++; el.PTS += 3; ev.P++; }
-                else if (gV > gL) { ev.G++; el.PTS += 3; el.P++; }
+                else if (gV > gL) { ev.G++; ev.PTS += 3; el.P++; }
                 else { el.E++; el.PTS += 1; ev.E++; ev.PTS += 1; }
             }
         }
@@ -486,10 +488,10 @@ function inicializarRondasSiguientes() {
 
 function obtenerGanador(partido) {
     if (!partido || partido.golesL === "" || partido.golesV === "" || partido.golesL === null || partido.golesV === null) return null;
-    if (partido.golesL > partido.golesV) return p.local;
-    if (partido.golesV > partido.golesL) return p.visitante;
-    if (partido.ganadorPenaltis === 'L') return p.local;
-    if (partido.ganadorPenaltis === 'V') return p.visitante;
+    if (partido.golesL > partido.golesV) return partido.local;
+    if (partido.golesV > partido.golesL) return partido.visitante;
+    if (partido.ganadorPenaltis === 'L') return partido.local;
+    if (partido.ganadorPenaltis === 'V') return partido.visitante;
     return null;
 }
 

@@ -1,4 +1,4 @@
-const CACHE_NAME = 'fifa-united-2026-v25';
+const CACHE_NAME = 'fifa-united-2026-v28';
 const ASSETS = [
   './index.html',
   './manifest.json'

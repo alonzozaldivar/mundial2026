@@ -216,9 +216,7 @@
 <footer>&copy; 2026 | ALONZO | FIFA UNITED 2026</footer>
 
 <script>
-// Clave maestra v27 para purgar cualquier conflicto previo de memoria y estructurar los grupos de la FIFA
-const CONFIG_VERSION = "mundial2026_v27_fifa_regions";
-let localDB = localStorage.getItem("mundial2026_db_v27");
+const CONFIG_VERSION = "mundial2026_v28_force_reset";
 
 const codigosBanderas = {
     "México": "mx", "Sudáfrica": "za", "Corea del Sur": "kr", "República Checa": "cz",
@@ -235,20 +233,16 @@ const codigosBanderas = {
     "Ghana": "gh", "Panamá": "pa", "Usbekistán": "uz", "Colombia": "co"
 };
 
-// ACOMODO OFICIAL DE GRUPOS POR REGIONES DE LA FIFA
 const configuracionMundial = {
     grupos: {
-        // ZONA OESTE (West Region)
         "A": ["México", "Sudáfrica", "Corea del Sur", "República Checa"],
         "B": ["Canadá", "Bosnia Herzegovina", "Catar", "Suiza"],
         "C": ["Estados Unidos", "Paraguay", "Brasil", "Marruecos"],
         "D": ["Haití", "Escocia", "Australia", "Turquía"],
-        // ZONA CENTRAL (Central Region)
         "E": ["Alemania", "Curasao", "Holanda", "Japón"],
         "F": ["Costa de Marfil", "Ecuador", "Suecia", "Túnez"],
         "G": ["España", "Cabo Verde", "Bélgica", "Egipto"],
         "H": ["Arabia Saudí", "Uruguay", "Irán", "Nueva Zelanda"],
-        // ZONA ESTE (East Region)
         "I": ["Francia", "Senegal", "Irak", "Noruega"],
         "J": ["Argentina", "Argelia", "Austria", "Jordania"],
         "K": ["Portugal", "Congo Democrático", "Inglaterra", "Croacia"],
@@ -318,7 +312,7 @@ const configuracionMundial = {
         { id: 62, fecha: "26 Jun", horario: "13:00", local: "Senegal", visitante: "Irak", golesL: "", golesV: "" },
         { id: 63, fecha: "26 Jun", horario: "18:00", local: "Uruguay", visitante: "España", golesL: "", golesV: "" },
         { id: 64, fecha: "26 Jun", horario: "18:00", local: "Cabo Verde", visitante: "Arabia Saudita", golesL: "", golesV: "" },
-        { id: 65, fecha: "26 Jun", horario: "21:00", local: "Egipto", visitante: "Irán", golesL: "", golesV: "" },
+        { id: 65, fecha: "26 Jun", horario: "21:00", local: "Egipto", '../../': 'ir', "Irán": "ir", golesL: "", golesV: "" },
         { id: 66, fecha: "26 Jun", horario: "21:00", local: "Nueva Zelanda", visitante: "Bélgica", golesL: "", golesV: "" },
         { id: 67, fecha: "27 Jun", horario: "15:00", local: "Panamá", visitante: "Inglaterra", golesL: "", golesV: "" },
         { id: 68, fecha: "27 Jun", horario: "15:00", local: "Croacia", visitante: "Ghana", golesL: "", golesV: "" },
@@ -330,13 +324,21 @@ const configuracionMundial = {
     eliminatorias: { r16vos: [], octavos: [], cuartos: [], semis: [], final: [] }
 };
 
-if (!localStorage.getItem(CONFIG_VERSION) || !localDB) {
+// ⚙️ PARCHE DE REPARACIÓN RADICAL SOBRE EL MOTOR DE LA APP
+// Si no encuentra la versión maestra exacta del software v28, limpia las bases de datos de inmediato.
+if (!localStorage.getItem(CONFIG_VERSION)) {
     localStorage.clear();
     localStorage.setItem(CONFIG_VERSION, "true");
-    localStorage.setItem("mundial2026_db_v27", JSON.stringify(configuracionMundial));
+    localStorage.setItem("mundial2026_db_v28", JSON.stringify(configuracionMundial));
 }
 
-let datosMundial = JSON.parse(localStorage.getItem("mundial2026_db_v27"));
+let datosMundial = JSON.parse(localStorage.getItem("mundial2026_db_v28"));
+if (!datosMundial || !datosMundial.partidos || datosMundial.partidos.length === 0) {
+    datosMundial = JSON.parse(JSON.stringify(configuracionMundial));
+    localStorage.setItem("mundial2026_db_v28", JSON.stringify(datosMundial));
+}
+
+let cacheEstadisticas = {};
 
 if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
@@ -379,7 +381,7 @@ function calcularTablas() {
             if (el && ev) {
                 el.PJ++; ev.PJ++; el.GF += gL; el.GC += gV; ev.GF += gV; ev.GC += gL;
                 if (gL > gV) { el.G++; el.PTS += 3; ev.P++; }
-                else if (gV > gL) { ev.G++; el.PTS += 3; el.P++; }
+                else if (gV > gL) { ev.G++; ev.PTS += 3; el.P++; }
                 else { el.E++; el.PTS += 1; ev.E++; ev.PTS += 1; }
             }
         }
@@ -468,7 +470,7 @@ function avanzarADieciseisavos() {
         return { id: emp.id, local: emp.l || "Desconocido", visitante: emp.v || "Desconocido", golesL: ex?ex.golesL:"", golesV: ex?ex.golesV:"", ganadorPenaltis: ex?ex.ganadorPenaltis:"" };
     });
     if(datosMundial.eliminatorias.octavos.length === 0) inicializarRondasSiguientes();
-    localStorage.setItem("mundial2026_db_v27", JSON.stringify(datosMundial));
+    localStorage.setItem("mundial2026_db_v28", JSON.stringify(datosMundial));
     alert("🎉 ¡Emparejamientos de 2da Ronda Generados!");
     cambiarPestaña('r16vos');
 }
@@ -565,7 +567,7 @@ function actualizarGolesEliminatoria(fase, id, tipo, valor) {
         partido[tipo === 'L' ? 'golesL' : 'golesV'] = (valor === "") ? "" : parseInt(valor);
         if (partido.golesL !== partido.golesV) partido.ganadorPenaltis = "";
         encadenarSiguienteRonda(fase);
-        localStorage.setItem("mundial2026_db_v27", JSON.stringify(datosMundial));
+        localStorage.setItem("mundial2026_db_v28", JSON.stringify(datosMundial));
         renderizarFaseEliminatoria(fase);
     }
 }
@@ -575,13 +577,23 @@ function actualizarPenaltis(fase, id, winner) {
     if (partido) {
         partido.ganadorPenaltis = winner;
         encadenarSiguienteRonda(fase);
-        localStorage.setItem("mundial2026_db_v27", JSON.stringify(datosMundial));
+        localStorage.setItem("mundial2026_db_v28", JSON.stringify(datosMundial));
     }
 }
 
 function guardarYCalcular() {
-    localStorage.setItem("mundial2026_db_v27", JSON.stringify(datosMundial));
+    localStorage.setItem("mundial2026_db_v28", JSON.stringify(datosMundial));
     calcularTablas();
+}
+
+function cambiarPestaña(fase) {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.seccion').forEach(s => s.classList.remove('active'));
+    const btnMap = { 'grupos': 0, 'r16vos': 1, 'octavos': 2, 'cuartos': 3, 'semis': 4, 'final': 5 };
+    document.querySelectorAll('.tab-btn')[btnMap[fase]].classList.add('active');
+    const secId = fase === 'grupos' ? 'sec-grupos' : `sec-${fase}`;
+    document.getElementById(secId).classList.add('active');
+    if (fase !== 'grupos') renderizarFaseEliminatoria(fase);
 }
 
 window.onload = function() { inicializarPartidosGrupos(); calcularTablas(); };

@@ -177,7 +177,8 @@
 <footer>&copy; 2026 | ALONZO | FIFA UNITED 2026</footer>
 
 <script>
-const CONFIG_VERSION = "mundial2026_v33_cronologico_scores";
+// 1. CONSTANTES DE CONFIGURACIÓN Y DECLARACIÓN DE VARIABLES PRIORITARIAS (CORREGIDO ORDEN)
+const CONFIG_VERSION = "mundial2026_v34_cronologico_final_fix";
 
 const codigosBanderas = {
     "México": "mx", "Sudáfrica": "za", "República de Corea": "kr", "República Checa": "cz",
@@ -223,19 +224,19 @@ const configuracionMundial = {
         
         // 🗓️ VIERNES 12 DE JUNIO 2026
         { id: 7, fecha: "12 Jun", horario: "15:00", grupo: "B", estadio: "Estadio Toronto", local: "Canadá", visitante: "Bosnia y Herzegovina", golesL: 1, golesV: 1 },
-        { id: 19, fecha: "12 Jun", horario: "21:00", grupo: "D", estadio: "Estadio Los Ángeles", local: "Estados Unidos", visitante: "Paraguay", golesL: 1, golesV: 2 },
+        { id: 19, fecha: "12 Jun", horario: "21:00", grupo: "D", estadio: "Estadio Los Ángeles", local: "Estados Unidos", visitante: "Paraguay", golesL: "", golesV: "" },
         
         // 🗓️ SÁBADO 13 DE JUNIO 2026
-        { id: 20, fecha: "13 Jun", horario: "00:00", grupo: "D", estadio: "Estadio BC Place Vancouver", local: "Australia", visitante: "Turquía", golesL: 0, golesV: 2 },
-        { id: 8, fecha: "13 Jun", horario: "15:00", grupo: "B", estadio: "Estadio Bahía de San Francisco", local: "Catar", visitante: "Suiza", golesL: 1, golesV: 3 },
-        { id: 13, fecha: "13 Jun", horario: "18:00", grupo: "C", estadio: "Estadio Nueva York Nueva Jersey", local: "Brasil", visitante: "Marruecos", golesL: 3, golesV: 1 },
-        { id: 14, fecha: "13 Jun", horario: "21:00", grupo: "C", estadio: "Estadio Boston", local: "Haití", visitante: "Escocia", golesL: 0, golesV: 2 },
+        { id: 20, fecha: "13 Jun", horario: "00:00", grupo: "D", estadio: "Estadio BC Place Vancouver", local: "Australia", visitante: "Turquía", golesL: "", golesV: "" },
+        { id: 8, fecha: "13 Jun", horario: "15:00", grupo: "B", estadio: "Estadio Bahía de San Francisco", local: "Catar", visitante: "Suiza", golesL: "", golesV: "" },
+        { id: 13, fecha: "13 Jun", horario: "18:00", grupo: "C", estadio: "Estadio Nueva York Nueva Jersey", local: "Brasil", visitante: "Marruecos", golesL: "", golesV: "" },
+        { id: 14, fecha: "13 Jun", horario: "21:00", grupo: "C", estadio: "Estadio Boston", local: "Haití", visitante: "Escocia", golesL: "", golesV: "" },
         
         // 🗓️ DOMINGO 14 DE JUNIO 2026
-        { id: 25, fecha: "14 Jun", horario: "13:00", grupo: "E", estadio: "Estadio Houston", local: "Alemania", visitante: "Curazao", golesL: 4, golesV: 0 },
-        { id: 31, fecha: "14 Jun", horario: "16:00", grupo: "F", estadio: "Estadio Dallas", local: "Países Bajos", visitante: "Japón", golesL: 1, golesV: 2 },
-        { id: 26, fecha: "14 Jun", horario: "19:00", grupo: "E", estadio: "Estadio Filadelfia", local: "Costa de Marfil", visitante: "Ecuador", golesL: 2, golesV: 2 },
-        { id: 32, fecha: "14 Jun", horario: "22:00", grupo: "F", estadio: "Estadio Monterrey", local: "Suecia", visitante: "Túnez", golesL: 1, golesV: 1 },
+        { id: 25, fecha: "14 Jun", horario: "13:00", grupo: "E", estadio: "Estadio Houston", local: "Alemania", visitante: "Curazao", golesL: "", golesV: "" },
+        { id: 31, fecha: "14 Jun", horario: "16:00", grupo: "F", estadio: "Estadio Dallas", local: "Países Bajos", visitante: "Japón", golesL: "", golesV: "" },
+        { id: 26, fecha: "14 Jun", horario: "19:00", grupo: "E", estadio: "Estadio Filadelfia", local: "Costa de Marfil", visitante: "Ecuador", golesL: "", golesV: "" },
+        { id: 32, fecha: "14 Jun", horario: "22:00", grupo: "F", estadio: "Estadio Monterrey", local: "Suecia", visitante: "Túnez", golesL: "", golesV: "" },
         
         // 🗓️ LUNES 15 DE JUNIO 2026
         { id: 43, fecha: "15 Jun", horario: "12:00", grupo: "H", estadio: "Estadio Atlanta", local: "España", visitante: "Cabo Verde", golesL: "", golesV: "" },
@@ -326,16 +327,23 @@ const configuracionMundial = {
     eliminatorias: { r16vos: [], octavos: [], cuartos: [], semis: [], final: [] }
 };
 
-let localDB = localStorage.getItem("mundial2026_db_v33");
+// 💎 PARCHE DE INICIALIZACIÓN COMPATIBLE EN SCOPE (CORREGIDO ORDEN DE DECLARACIÓN)
+let localDB = localStorage.getItem("mundial2026_db_v34");
 
 if (!localStorage.getItem(CONFIG_VERSION) || !localDB) {
     localStorage.clear();
     localStorage.setItem(CONFIG_VERSION, "true");
-    localStorage.setItem("mundial2026_db_v33", JSON.stringify(configuracionMundial));
+    localStorage.setItem("mundial2026_db_v34", JSON.stringify(configuracionMundial));
 }
 
-let datosMundial = JSON.parse(localStorage.getItem("mundial2026_db_v33")) || JSON.parse(JSON.stringify(configuracionMundial));
+let datosMundial = JSON.parse(localStorage.getItem("mundial2026_db_v34")) || JSON.parse(JSON.stringify(configuracionMundial));
 let cacheEstadisticas = {};
+
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js').catch(err => console.log(err));
+    });
+}
 
 function inicializarPartidosGrupos() {
     const contenedor = document.getElementById("contenedor-partidos");
@@ -448,7 +456,7 @@ function avanzarADieciseisavos() {
         return { id: emp.id, local: emp.l || "Desconocido", visitante: emp.v || "Desconocido", golesL: ex?ex.golesL:"", golesV: ex?ex.golesV:"", ganadorPenaltis: ex?ex.ganadorPenaltis:"" };
     });
     if(datosMundial.eliminatorias.octavos.length === 0) inicializarRondasSiguientes();
-    localStorage.setItem("mundial2026_db_v33", JSON.stringify(datosMundial));
+    localStorage.setItem("mundial2026_db_v34", JSON.stringify(datosMundial));
     alert("🎉 ¡Emparejamientos de 2da Ronda Generados!");
     cambiarPestaña('r16vos');
 }
@@ -461,91 +469,13 @@ function inicializarRondasSiguientes() {
     datosMundial.eliminatorias.final = [{ id: 103, local: "Finalista 1", visitante: "Finalista 2", golesL:"", golesV:"", ganadorPenaltis:"" }];
 }
 
-function obtenerGanador(partido) {
-    if (!partido || partido.golesL === "" || partido.golesV === "" || partido.golesL === null || partido.golesV === null) return null;
-    if (parseInt(partido.golesL) > parseInt(partido.golesV)) return partido.local;
-    if (parseInt(partido.golesV) > parseInt(partido.golesL)) return partido.visitante;
-    if (partido.ganadorPenaltis === 'L') return partido.local;
-    if (partido.ganadorPenaltis === 'V') return partido.visitante;
-    return null;
-}
-
-function encadenarSiguienteRonda(faseActual) {
-    let el = datosMundial.eliminatorias;
-    if (faseActual === 'r16vos') {
-        let cruces = [[73,74], [75,76], [77,78], [79,80], [81,82], [83,84], [85,86], [87,88]];
-        cruces.forEach((par, index) => {
-            el.octavos[index].local = obtenerGanador(el.r16vos.find(p=>p.id === par[0])) || "Ganador " + par[0];
-            el.octavos[index].visitante = obtenerGanador(el.r16vos.find(p=>p.id === par[1])) || "Ganador " + par[1];
-        });
-    } else if (faseActual === 'octavos') {
-        let cruces = [[89,90], [91,92], [93,94], [95,96]];
-        cruces.forEach((par, index) => {
-            el.cuartos[index].local = obtenerGanador(el.octavos.find(p=>p.id === par[0])) || "Ganador " + par[0];
-            el.cuartos[index].visitante = obtenerGanador(el.octavos.find(p=>p.id === par[1])) || "Ganador " + par[1];
-        });
-    } else if (faseActual === 'cuartos') {
-        let cruces = [[97,98], [99,100]];
-        cruces.forEach((par, index) => {
-            el.semis[index].local = obtenerGanador(el.cuartos.find(p=>p.id === par[0])) || "Ganador " + par[0];
-            el.semis[index].visitante = obtenerGanador(el.cuartos.find(p=>p.id === par[1])) || "Ganador " + par[1];
-        });
-    } else if (faseActual === 'semis') {
-        el.final[0].local = obtenerGanador(el.semis.find(p=>p.id === 101)) || "Finalista 1";
-        el.final[0].visitante = obtenerGanador(el.semis.find(p=>p.id === 102)) || "Finalista 2";
-    }
-}
-
-function renderizarFaseEliminatoria(fase) {
-    const contenedor = document.getElementById(`contenedor-${fase === 'r16vos' ? '16vos' : fase}`);
-    if (!contenedor) return;
-    contenedor.innerHTML = "";
-    let listaPartidos = datosMundial.eliminatorias[fase];
-    if (!listaPartidos || listaPartidos.length === 0) {
-        contenedor.innerHTML = "<p class='alerta-vacio'>⚠️ Primero debes procesar la Fase de Grupos.</p>";
-        return;
-    }
-    listaPartidos.forEach(p => {
-        const div = document.createElement("div");
-        div.className = "partido";
-        let selectPenaltis = "";
-        let esDesconocido = p.local.includes("Ganador") || p.visitante.includes("Ganador") || p.local.includes("SF") || p.local.includes("Finalista");
-        if (p.golesL !== "" && p.golesV !== "" && parseInt(p.golesL) === parseInt(p.golesV) && !esDesconocido) {
-            selectPenaltis = `
-                <div class="penaltis">
-                    Ganador Penaltis: 
-                    <select onchange="actualizarPenaltis('${fase}', ${p.id}, this.value)">
-                        <option value="">--</option>
-                        <option value="L" ${p.ganadorPenaltis === 'L'?'selected':''}>${p.local}</option>
-                        <option value="V" ${p.ganadorPenaltis === 'V'?'selected':''}>${p.visitante}</option>
-                    </select>
-                </div>
-            `;
-        }
-        div.innerHTML = `
-            <div class="info-partido"><b>PARTIDO N° ${p.id}</b></div>
-            <div class="equipo-bloque local">${generarHTMLIdEquipo(p.local, true)}</div>
-            <div class="marcador-container">
-                <div class="marcador">
-                    <input type="number" min="0" value="${p.golesL}" onchange="actualizarGolesEliminatoria('${fase}', ${p.id}, 'L', this.value)">
-                    <span style="font-weight:900; color:#cbd5e1">VS</span>
-                    <input type="number" min="0" value="${p.golesV}" onchange="actualizarGolesEliminatoria('${fase}', ${p.id}, 'V', this.value)">
-                </div>
-                ${selectPenaltis}
-            </div>
-            <div class="equipo-bloque visitante">${generarHTMLIdEquipo(p.visitante, false)}</div>
-        `;
-        contenedor.appendChild(div);
-    });
-}
-
 function actualizarGolesEliminatoria(fase, id, tipo, valor) {
     const partido = datosMundial.eliminatorias[fase].find(p => p.id === id);
     if (partido) {
         partido[tipo === 'L' ? 'golesL' : 'golesV'] = (valor === "") ? "" : parseInt(valor);
         if (partido.golesL !== partido.golesV) partido.ganadorPenaltis = "";
         encadenarSiguienteRonda(fase);
-        localStorage.setItem("mundial2026_db_v33", JSON.stringify(datosMundial));
+        localStorage.setItem("mundial2026_db_v34", JSON.stringify(datosMundial));
         renderizarFaseEliminatoria(fase);
     }
 }
@@ -555,12 +485,12 @@ function actualizarPenaltis(fase, id, winner) {
     if (partido) {
         partido.ganadorPenaltis = winner;
         encadenarSiguienteRonda(fase);
-        localStorage.setItem("mundial2026_db_v33", JSON.stringify(datosMundial));
+        localStorage.setItem("mundial2026_db_v34", JSON.stringify(datosMundial));
     }
 }
 
 function guardarYCalcular() {
-    localStorage.setItem("mundial2026_db_v33", JSON.stringify(datosMundial));
+    localStorage.setItem("mundial2026_db_v34", JSON.stringify(datosMundial));
     calcularTablas();
 }
 

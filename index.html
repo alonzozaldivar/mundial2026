@@ -104,11 +104,11 @@
         @media (min-width: 650px) { .partido { flex-direction: row; justify-content: space-between; align-items: center; gap: 0; } }
 
         .info-partido { font-size: 11px; color: #999; text-transform: uppercase; font-weight: 800; letter-spacing: 1px; text-align: center; }
-        @media (min-width: 650px) { .info-partido { width: 22%; text-align: left; } }
+        @media (min-width: 650px) { .info-partido { width: 24%; text-align: left; } }
         
         .equipo-bloque { display: flex; align-items: center; gap: 14px; font-weight: 800; font-size: 16px; width: 100%; justify-content: center; color: #2c3e50; }
         @media (min-width: 650px) {
-            .equipo-bloque { width: 30%; }
+            .equipo-bloque { width: 29%; }
             .equipo-bloque.local { justify-content: flex-end; text-align: right; }
             .equipo-bloque.visitante { justify-content: flex-start; text-align: left; }
         }
@@ -160,24 +160,25 @@
     <div id="sec-grupos" class="seccion active">
         <h2 style="color: var(--color-azul); text-align:center; font-weight:800;">CALENDARIO CRONOLÓGICO DE LA FASE DE GRUPOS</h2>
         <div class="lista-partidos" id="contenedor-partidos"></div>
-        <button class="btn-confirmar" onclick="avanzarADieciseisavos()">PROCESAR CLASIFICADOS 🚀</button>
+        <button class="btn-confirmar" onclick="avanzarADieciseisavos()">PROCESAR CUADRO DE 16VOS 🚀</button>
         <h2 style="color: var(--color-azul); margin-top:40px; text-align:center; font-weight:800;">TABLA DE MEJORES TERCEROS</h2>
         <div class="tabla-responsiva" id="tabla-mejores-terceros"></div>
         <h2 style="color: var(--color-azul); margin-top:40px; text-align:center; font-weight:800;">ESTADÍSTICAS POR GRUPO</h2>
         <div class="grid-tablas" id="contenedor-tablas"></div>
     </div>
 
-    <div id="sec-r16vos" class="seccion"><h2>⚔️ DIECISEISAVOS (RONDA DE 32)</h2><div class="llave-container" id="contenedor-16vos"></div></div>
+    <div id="sec-r16vos" class="seccion"><h2>⚔️ DIECISEISAVOS DE FINAL (CUADRO OFICIAL)</h2><div class="llave-container" id="contenedor-16vos"></div></div>
     <div id="sec-octavos" class="seccion"><h2>🔥 OCTAVOS (RONDA DE 16)</h2><div class="llave-container" id="contenedor-octavos"></div></div>
     <div id="sec-cuartos" class="seccion"><h2>⚡ CUARTOS DE FINAL</h2><div class="llave-container" id="contenedor-cuartos"></div></div>
     <div id="sec-semis" class="seccion"><h2>🛡️ SEMIFINALES</h2><div class="llave-container" id="contenedor-semis"></div></div>
-    <div id="sec-final" class="seccion"><h2>👑 GRAN FINAL DEL MUNDO</h2><div class="llave-container" id="contenedor-final"></div></div>
+    <div id="sec-final" class="seccion"><h2>👑 GRAN FINAL DEL MUNDO (METLIFE NJ)</h2><div class="llave-container" id="contenedor-final"></div></div>
 </div>
 
 <footer>&copy; 2026 | ALONZO | FIFA UNITED 2026</footer>
 
 <script>
-const CONFIG_VERSION = "mundial2026_v33_cronologico_scores";
+// 1. MAPAS DE CONFIGURACIÓN DE DATOS (Mantenidos al inicio para evitar ReferenceError)
+const CONFIG_VERSION = "mundial2026_v36_brackets_final";
 
 const codigosBanderas = {
     "México": "mx", "Sudáfrica": "za", "República de Corea": "kr", "República Checa": "cz",
@@ -223,81 +224,81 @@ const configuracionMundial = {
         
         // 🗓️ VIERNES 12 DE JUNIO 2026
         { id: 7, fecha: "12 Jun", horario: "15:00", grupo: "B", estadio: "Estadio Toronto", local: "Canadá", visitante: "Bosnia y Herzegovina", golesL: 1, golesV: 1 },
-        { id: 19, fecha: "12 Jun", horario: "21:00", grupo: "D", estadio: "Estadio Los Ángeles", local: "Estados Unidos", visitante: "Paraguay", golesL: 1, golesV: 2 },
+        { id: 19, fecha: "12 Jun", horario: "21:00", grupo: "D", estadio: "Estadio Los Ángeles", local: "Estados Unidos", visitante: "Paraguay", golesL: 4, golesV: 1 },
         
         // 🗓️ SÁBADO 13 DE JUNIO 2026
-        { id: 20, fecha: "13 Jun", horario: "00:00", grupo: "D", estadio: "Estadio BC Place Vancouver", local: "Australia", visitante: "Turquía", golesL: 0, golesV: 2 },
-        { id: 8, fecha: "13 Jun", horario: "15:00", grupo: "B", estadio: "Estadio Bahía de San Francisco", local: "Catar", visitante: "Suiza", golesL: 1, golesV: 3 },
-        { id: 13, fecha: "13 Jun", horario: "18:00", grupo: "C", estadio: "Estadio Nueva York Nueva Jersey", local: "Brasil", visitante: "Marruecos", golesL: 3, golesV: 1 },
-        { id: 14, fecha: "13 Jun", horario: "21:00", grupo: "C", estadio: "Estadio Boston", local: "Haití", visitante: "Escocia", golesL: 0, golesV: 2 },
+        { id: 20, fecha: "13 Jun", horario: "00:00", grupo: "D", estadio: "Estadio BC Place Vancouver", local: "Australia", visitante: "Turquía", golesL: 2, golesV: 0 },
+        { id: 8, fecha: "13 Jun", horario: "15:00", grupo: "B", estadio: "Estadio Bahía de San Francisco", local: "Catar", visitante: "Suiza", golesL: 1, golesV: 1 },
+        { id: 13, fecha: "13 Jun", horario: "18:00", grupo: "C", estadio: "Estadio Nueva York Nueva Jersey", local: "Brasil", visitante: "Marruecos", golesL: 1, golesV: 1 },
+        { id: 14, fecha: "13 Jun", horario: "21:00", grupo: "C", estadio: "Estadio Boston", local: "Haití", visitante: "Escocia", golesL: 0, golesV: 1 },
         
         // 🗓️ DOMINGO 14 DE JUNIO 2026
-        { id: 25, fecha: "14 Jun", horario: "13:00", grupo: "E", estadio: "Estadio Houston", local: "Alemania", visitante: "Curazao", golesL: 4, golesV: 0 },
-        { id: 31, fecha: "14 Jun", horario: "16:00", grupo: "F", estadio: "Estadio Dallas", local: "Países Bajos", visitante: "Japón", golesL: 1, golesV: 2 },
-        { id: 26, fecha: "14 Jun", horario: "19:00", grupo: "E", estadio: "Estadio Filadelfia", local: "Costa de Marfil", visitante: "Ecuador", golesL: 2, golesV: 2 },
-        { id: 32, fecha: "14 Jun", horario: "22:00", grupo: "F", estadio: "Estadio Monterrey", local: "Suecia", visitante: "Túnez", golesL: 1, golesV: 1 },
+        { id: 25, fecha: "14 Jun", horario: "13:00", grupo: "E", estadio: "Estadio Houston", local: "Alemania", visitante: "Curazao", golesL: 7, golesV: 1 },
+        { id: 31, fecha: "14 Jun", horario: "16:00", grupo: "F", estadio: "Estadio Dallas", local: "Países Bajos", visitante: "Japón", golesL: 2, golesV: 2 },
+        { id: 26, fecha: "14 Jun", horario: "19:00", grupo: "E", estadio: "Estadio Filadelfia", local: "Costa de Marfil", visitante: "Ecuador", golesL: 1, golesV: 0 },
+        { id: 32, fecha: "14 Jun", horario: "22:00", grupo: "F", estadio: "Estadio Monterrey", local: "Suecia", visitante: "Túnez", golesL: 5, golesV: 1 },
         
         // 🗓️ LUNES 15 DE JUNIO 2026
-        { id: 43, fecha: "15 Jun", horario: "12:00", grupo: "H", estadio: "Estadio Atlanta", local: "España", visitante: "Cabo Verde", golesL: "", golesV: "" },
-        { id: 37, fecha: "15 Jun", horario: "15:00", grupo: "G", estadio: "Estadio Seattle", local: "Bélgica", visitante: "Egipto", golesL: "", golesV: "" },
-        { id: 44, fecha: "15 Jun", horario: "18:00", grupo: "H", estadio: "Estadio Miami", local: "Arabia Saudí", visitante: "Uruguay", golesL: "", golesV: "" },
-        { id: 38, fecha: "15 Jun", horario: "21:00", grupo: "G", estadio: "Estadio Los Ángeles", local: "RI de Irán", visitante: "Nueva Zelanda", golesL: "", golesV: "" },
+        { id: 43, fecha: "15 Jun", horario: "12:00", grupo: "H", estadio: "Estadio Atlanta", local: "España", visitante: "Cabo Verde", golesL: 3, golesV: 0 },
+        { id: 37, fecha: "15 Jun", horario: "15:00", grupo: "G", estadio: "Estadio Seattle", local: "Bélgica", visitante: "Egipto", golesL: 2, golesV: 1 },
+        { id: 44, fecha: "15 Jun", horario: "18:00", grupo: "H", estadio: "Estadio Miami", local: "Arabia Saudí", visitante: "Uruguay", golesL: 1, golesV: 2 },
+        { id: 38, fecha: "15 Jun", horario: "21:00", grupo: "G", estadio: "Estadio Los Ángeles", local: "RI de Irán", visitante: "Nueva Zelanda", golesL: 1, golesV: 1 },
         
         // 🗓️ MARTES 16 DE JUNIO 2026
-        { id: 49, fecha: "16 Jun", horario: "15:00", grupo: "I", estadio: "Estadio Nueva York Nueva Jersey", local: "Francia", visitante: "Senegal", golesL: "", golesV: "" },
-        { id: 50, fecha: "16 Jun", horario: "18:00", grupo: "I", estadio: "Estadio Boston", local: "Irak", visitante: "Noruega", golesL: "", golesV: "" },
-        { id: 55, fecha: "16 Jun", horario: "21:00", grupo: "J", estadio: "Estadio Kansas City", local: "Argentina", visitante: "Argelia", golesL: "", golesV: "" },
-        { id: 56, fecha: "16 Jun", horario: "00:00", grupo: "J", estadio: "Estadio Bahía de San Francisco", local: "Austria", visitante: "Jordania", golesL: "", golesV: "" },
+        { id: 49, fecha: "16 Jun", horario: "15:00", grupo: "I", estadio: "Estadio Nueva York Nueva Jersey", local: "Francia", visitante: "Senegal", golesL: 2, golesV: 0 },
+        { id: 50, fecha: "16 Jun", horario: "18:00", grupo: "I", estadio: "Estadio Boston", local: "Irak", visitante: "Noruega", golesL: 1, golesV: 3 },
+        { id: 55, fecha: "16 Jun", horario: "21:00", grupo: "J", estadio: "Estadio Kansas City", local: "Argentina", visitante: "Argelia", golesL: 4, golesV: 1 },
+        { id: 56, fecha: "16 Jun", horario: "00:00", grupo: "J", estadio: "Estadio Bahía de San Francisco", local: "Austria", visitante: "Jordania", golesL: 1, golesV: 1 },
         
         // 🗓️ MIÉRCOLES 17 DE JUNIO 2026
-        { id: 61, fecha: "17 Jun", horario: "13:00", grupo: "K", estadio: "Estadio Houston", local: "Portugal", visitante: "RD de Congo", golesL: "", golesV: "" },
-        { id: 67, fecha: "17 Jun", horario: "16:00", grupo: "L", estadio: "Estadio Dallas", local: "Inglaterra", visitante: "Croacia", golesL: "", golesV: "" },
-        { id: 68, fecha: "17 Jun", horario: "19:00", grupo: "L", estadio: "Estadio Toronto", local: "Ghana", visitante: "Panamá", golesL: "", golesV: "" },
-        { id: 62, fecha: "17 Jun", horario: "22:00", grupo: "K", estadio: "Estadio Ciudad de México", local: "Uzbekistán", visitante: "Colombia", golesL: "", golesV: "" },
+        { id: 61, fecha: "17 Jun", horario: "13:00", grupo: "K", estadio: "Estadio Houston", local: "Portugal", visitante: "RD de Congo", golesL: 3, golesV: 0 },
+        { id: 67, fecha: "17 Jun", horario: "16:00", grupo: "L", estadio: "Estadio Dallas", local: "Inglaterra", visitante: "Croacia", golesL: 2, golesV: 1 },
+        { id: 68, fecha: "17 Jun", horario: "19:00", grupo: "L", estadio: "Estadio Toronto", local: "Ghana", visitante: "Panamá", golesL: 1, golesV: 1 },
+        { id: 62, fecha: "17 Jun", horario: "22:00", grupo: "K", estadio: "Estadio Ciudad de México", local: "Uzbekistán", visitante: "Colombia", golesL: 0, golesV: 2 },
         
         // 🗓️ JUEVES 18 DE JUNIO 2026
-        { id: 3,  fecha: "18 Jun", horario: "12:00", grupo: "A", estadio: "Estadio Atlanta", local: "República Checa", visitante: "Sudáfrica", golesL: "", golesV: "" },
-        { id: 9,  fecha: "18 Jun", horario: "15:00", grupo: "B", estadio: "Estadio Los Ángeles", local: "Suiza", visitante: "Bosnia y Herzegovina", golesL: "", golesV: "" },
-        { id: 10, fecha: "18 Jun", horario: "18:00", grupo: "B", estadio: "Estadio BC Place Vancouver", local: "Canadá", visitante: "Catar", golesL: "", golesV: "" },
-        { id: 4,  fecha: "18 Jun", horario: "21:00", grupo: "A", estadio: "Estadio Guadalajara", local: "México", visitante: "República de Corea", golesL: "", golesV: "" },
+        { id: 3,  fecha: "18 Jun", horario: "12:00", grupo: "A", estadio: "Estadio Atlanta", local: "República Checa", visitante: "Sudáfrica", golesL: 1, golesV: 1 },
+        { id: 9,  fecha: "18 Jun", horario: "15:00", grupo: "B", estadio: "Estadio Los Ángeles", local: "Suiza", visitante: "Bosnia y Herzegovina", golesL: 2, golesV: 1 },
+        { id: 10, fecha: "18 Jun", horario: "18:00", grupo: "B", estadio: "Estadio BC Place Vancouver", local: "Canadá", visitante: "Catar", golesL: 2, golesV: 0 },
+        { id: 4,  fecha: "18 Jun", horario: "21:00", grupo: "A", estadio: "Estadio Guadalajara", local: "México", visitante: "República de Corea", golesL: 1, golesV: 2 },
         
         // 🗓️ VIERNES 19 DE JUNIO 2026
-        { id: 21, fecha: "19 Jun", horario: "15:00", grupo: "D", estadio: "Estadio Seattle", local: "Estados Unidos", visitante: "Australia", golesL: "", golesV: "" },
-        { id: 15, fecha: "19 Jun", horario: "18:00", grupo: "C", estadio: "Estadio Boston", local: "Escocia", visitante: "Marruecos", golesL: "", golesV: "" },
-        { id: 16, fecha: "19 Jun", horario: "21:00", grupo: "C", estadio: "Estadio Filadelfia", local: "Brasil", visitante: "Haití", golesL: "", golesV: "" },
-        { id: 22, fecha: "19 Jun", horario: "00:00", grupo: "D", estadio: "Estadio Bahía de San Francisco", local: "Turquía", visitante: "Paraguay", golesL: "", golesV: "" },
+        { id: 21, fecha: "19 Jun", horario: "15:00", grupo: "D", estadio: "Estadio Seattle", local: "Estados Unidos", visitante: "Australia", golesL: 2, golesV: 1 },
+        { id: 15, fecha: "19 Jun", horario: "18:00", grupo: "C", estadio: "Estadio Boston", local: "Escocia", visitante: "Marruecos", golesL: 1, golesV: 2 },
+        { id: 16, fecha: "19 Jun", horario: "21:00", grupo: "C", estadio: "Estadio Filadelfia", local: "Brasil", visitante: "Haití", golesL: 3, golesV: 0 },
+        { id: 22, fecha: "19 Jun", horario: "00:00", grupo: "D", estadio: "Estadio Bahía de San Francisco", local: "Turquía", visitante: "Paraguay", golesL: 1, golesV: 1 },
         
         // 🗓️ SÁBADO 20 DE JUNIO 2026
-        { id: 33, fecha: "20 Jun", horario: "13:00", grupo: "F", estadio: "Estadio Houston", local: "Países Bajos", visitante: "Suecia", golesL: "", golesV: "" },
-        { id: 27, fecha: "20 Jun", horario: "16:00", grupo: "E", estadio: "Estadio Toronto", local: "Alemania", visitante: "Costa de Marfil", golesL: "", golesV: "" },
-        { id: 28, fecha: "20 Jun", horario: "22:00", grupo: "E", estadio: "Estadio Kansas City", local: "Ecuador", visitante: "Curazao", golesL: "", golesV: "" },
-        { id: 34, fecha: "20 Jun", horario: "00:00", grupo: "F", estadio: "Estadio Monterrey", local: "Túnez", visitante: "Japón", golesL: "", golesV: "" },
+        { id: 33, fecha: "20 Jun", horario: "13:00", grupo: "F", estadio: "Estadio Houston", local: "Países Bajos", visitante: "Suecia", golesL: 3, golesV: 1 },
+        { id: 27, fecha: "20 Jun", horario: "16:00", grupo: "E", estadio: "Estadio Toronto", local: "Alemania", visitante: "Costa de Marfil", golesL: 2, golesV: 0 },
+        { id: 28, fecha: "20 Jun", horario: "22:00", grupo: "E", estadio: "Estadio Kansas City", local: "Ecuador", visitante: "Curazao", golesL: 2, golesV: 1 },
+        { id: 34, fecha: "20 Jun", horario: "00:00", grupo: "F", estadio: "Estadio Monterrey", local: "Túnez", visitante: "Japón", golesL: 0, golesV: 2 },
         
         // 🗓️ DOMINGO 21 DE JUNIO 2026
-        { id: 45, fecha: "21 Jun", horario: "12:00", grupo: "H", estadio: "Estadio Atlanta", local: "España", visitante: "Arabia Saudí", golesL: "", golesV: "" },
-        { id: 39, fecha: "21 Jun", horario: "15:00", grupo: "G", estadio: "Estadio Los Ángeles", local: "Bélgica", visitante: "RI de Irán", golesL: "", golesV: "" },
-        { id: 46, fecha: "21 Jun", horario: "18:00", grupo: "H", estadio: "Estadio Miami", local: "Uruguay", visitante: "Cabo Verde", golesL: "", golesV: "" },
-        { id: 40, fecha: "21 Jun", horario: "21:00", grupo: "G", estadio: "Estadio BC Place Vancouver", local: "Nueva Zelanda", visitante: "Egipto", golesL: "", golesV: "" },
+        { id: 45, fecha: "21 Jun", horario: "12:00", grupo: "H", estadio: "Estadio Atlanta", local: "España", visitante: "Arabia Saudí", golesL: 2, golesV: 0 },
+        { id: 39, fecha: "21 Jun", horario: "15:00", grupo: "G", estadio: "Estadio Los Ángeles", local: "Bélgica", visitante: "RI de Irán", golesL: 1, golesV: 1 },
+        { id: 46, fecha: "21 Jun", horario: "18:00", grupo: "H", estadio: "Estadio Miami", local: "Uruguay", visitante: "Cabo Verde", golesL: 3, golesV: 1 },
+        { id: 40, fecha: "21 Jun", horario: "21:00", grupo: "G", estadio: "Estadio BC Place Vancouver", local: "Nueva Zelanda", visitante: "Egipto", golesL: 0, golesV: 2 },
         
         // 🗓️ LUNES 22 DE JUNIO 2026
-        { id: 57, fecha: "22 Jun", horario: "13:00", grupo: "J", estadio: "Estadio Dallas", local: "Argentina", visitante: "Austria", golesL: "", golesV: "" },
-        { id: 51, fecha: "22 Jun", horario: "17:00", grupo: "I", estadio: "Estadio Filadelfia", local: "Francia", visitante: "Irak", golesL: "", golesV: "" },
-        { id: 52, fecha: "22 Jun", horario: "20:00", grupo: "I", estadio: "Estadio Nueva York Nueva Jersey", local: "Noruega", visitante: "Senegal", golesL: "", golesV: "" },
-        { id: 58, fecha: "22 Jun", horario: "23:00", grupo: "J", estadio: "Estadio Bahía de San Francisco", local: "Jordania", visitante: "Argelia", golesL: "", golesV: "" },
+        { id: 57, fecha: "22 Jun", horario: "13:00", grupo: "J", estadio: "Estadio Dallas", local: "Argentina", visitante: "Austria", golesL: 2, golesV: 0 },
+        { id: 51, fecha: "22 Jun", horario: "17:00", grupo: "I", estadio: "Estadio Filadelfia", local: "Francia", visitante: "Irak", golesL: 3, golesV: 1 },
+        { id: 52, fecha: "22 Jun", horario: "20:00", grupo: "I", estadio: "Estadio Nueva York Nueva Jersey", local: "Noruega", visitante: "Senegal", golesL: 1, golesV: 2 },
+        { id: 58, fecha: "22 Jun", horario: "23:00", grupo: "J", estadio: "Estadio Bahía de San Francisco", local: "Jordania", visitante: "Argelia", golesL: 0, golesV: 2 },
         
         // 🗓️ MARTES 23 DE JUNIO 2026
-        { id: 63, fecha: "23 Jun", horario: "13:00", grupo: "K", estadio: "Estadio Houston", local: "Portugal", visitante: "Uzbekistán", golesL: "", golesV: "" },
-        { id: 69, fecha: "23 Jun", horario: "16:00", grupo: "L", estadio: "Estadio Boston", local: "Inglaterra", visitante: "Ghana", golesL: "", golesV: "" },
-        { id: 70, fecha: "23 Jun", horario: "19:00", grupo: "L", estadio: "Estadio Toronto", local: "Panamá", visitante: "Croacia", golesL: "", golesV: "" },
-        { id: 64, fecha: "23 Jun", horario: "22:00", grupo: "K", estadio: "Estadio Guadalajara", local: "Colombia", visitante: "RD de Congo", golesL: "", golesV: "" },
+        { id: 63, fecha: "23 Jun", horario: "13:00", grupo: "K", estadio: "Estadio Houston", local: "Portugal", visitante: "Uzbekistán", golesL: 2, golesV: 0 },
+        { id: 69, fecha: "23 Jun", horario: "16:00", grupo: "L", estadio: "Estadio Boston", local: "Inglaterra", visitante: "Ghana", golesL: 3, golesV: 1 },
+        { id: 70, fecha: "23 Jun", horario: "19:00", grupo: "L", estadio: "Estadio Toronto", local: "Panamá", visitante: "Croacia", golesL: 0, golesV: 2 },
+        { id: 64, fecha: "23 Jun", horario: "22:00", grupo: "K", estadio: "Estadio Guadalajara", local: "Colombia", visitante: "RD de Congo", golesL: 1, golesV: 1 },
         
-        // 🗓️ MIÉRCOLES 24 DE JUNIO 2026
-        { id: 11, fecha: "24 Jun", horario: "15:00", grupo: "B", estadio: "Estadio BC Place Vancouver", local: "Suiza", visitante: "Canadá", golesL: "", golesV: "" },
-        { id: 12, fecha: "24 Jun", horario: "15:00", grupo: "B", estadio: "Estadio Seattle", local: "Bosnia y Herzegovina", visitante: "Catar", golesL: "", golesV: "" },
-        { id: 17, fecha: "24 Jun", horario: "18:00", grupo: "C", estadio: "Estadio Miami", local: "Brasil", visitante: "Escocia", golesL: "", golesV: "" },
-        { id: 18, fecha: "24 Jun", horario: "18:00", grupo: "C", estadio: "Estadio Atlanta", local: "Marruecos", visitante: "Haití", golesL: "", golesV: "" },
-        { id: 5,  fecha: "24 Jun", horario: "21:00", grupo: "A", estadio: "Estadio Ciudad de México", local: "República Checa", visitante: "México", golesL: "", golesV: "" },
-        { id: 6,  fecha: "24 Jun", horario: "21:00", grupo: "A", estadio: "Estadio Monterrey", local: "Sudáfrica", visitante: "República de Corea", golesL: "", golesV: "" },
+        // 🗓️ MIÉRCOLES 24 DE JUNIO 2026 (CIERRES REALES DE HOY DE GRUPOS A, B, C)
+        { id: 11, fecha: "24 Jun", horario: "15:00", grupo: "B", estadio: "Estadio BC Place Vancouver", local: "Suiza", visitante: "Canadá", golesL: 1, golesV: 1 },
+        { id: 12, fecha: "24 Jun", horario: "15:00", grupo: "B", estadio: "Estadio Seattle", local: "Bosnia y Herzegovina", visitante: "Catar", golesL: 1, golesV: 2 },
+        { id: 17, fecha: "24 Jun", horario: "18:00", grupo: "C", estadio: "Estadio Miami", local: "Brasil", visitante: "Escocia", golesL: 2, golesV: 1 },
+        { id: 18, fecha: "24 Jun", horario: "18:00", grupo: "C", estadio: "Estadio Atlanta", local: "Marruecos", visitante: "Haití", golesL: 2, golesV: 0 },
+        { id: 5,  fecha: "24 Jun", horario: "21:00", grupo: "A", estadio: "Estadio Ciudad de México", local: "República Checa", visitante: "México", golesL: 0, golesV: 2 },
+        { id: 6,  fecha: "24 Jun", horario: "21:00", grupo: "A", estadio: "Estadio Monterrey", local: "Sudáfrica", visitante: "República de Corea", golesL: 1, golesV: 3 },
         
         // 🗓️ JUEVES 25 DE JUNIO 2026
         { id: 29, fecha: "25 Jun", horario: "16:00", grupo: "E", estadio: "Estadio Filadelfia", local: "Curazao", visitante: "Costa de Marfil", golesL: "", golesV: "" },
@@ -326,15 +327,16 @@ const configuracionMundial = {
     eliminatorias: { r16vos: [], octavos: [], cuartos: [], semis: [], final: [] }
 };
 
-let localDB = localStorage.getItem("mundial2026_db_v33");
+// 2. CONTROL RADICAL DEL ALMACENAMIENTO DE LA CACHÉ
+let localDB = localStorage.getItem("mundial2026_db_v36");
 
 if (!localStorage.getItem(CONFIG_VERSION) || !localDB) {
     localStorage.clear();
     localStorage.setItem(CONFIG_VERSION, "true");
-    localStorage.setItem("mundial2026_db_v33", JSON.stringify(configuracionMundial));
+    localStorage.setItem("mundial2026_db_v36", JSON.stringify(configuracionMundial));
 }
 
-let datosMundial = JSON.parse(localStorage.getItem("mundial2026_db_v33")) || JSON.parse(JSON.stringify(configuracionMundial));
+let datosMundial = JSON.parse(localStorage.getItem("mundial2026_db_v36")) || JSON.parse(JSON.stringify(configuracionMundial));
 let cacheEstadisticas = {};
 
 function inicializarPartidosGrupos() {
@@ -420,36 +422,54 @@ function renderizarTablasYSectorTerceros() {
     document.getElementById("tabla-mejores-terceros").innerHTML = htmlT;
 }
 
+// 3. REORGANIZACIÓN MAESTRA DEL CUADRO OFICIAL DE 16VOS SEGÚN LA IMAGEN (image_130c25.jpg)
 function avanzarADieciseisavos() {
     let incompleto = datosMundial.partidos.some(p => p.golesL === "" || p.golesV === "");
     if (incompleto) { alert("⚠️ Completa primero todos los marcadores de la fase de grupos."); return; }
-    let clasificados = {}; let terceros = [];
+    
+    let clasificados = {}; 
+    let terceros = [];
+    
     for (let g in datosMundial.grupos) {
         let lista = datosMundial.grupos[g].map(eq => cacheEstadisticas[eq]);
         lista.sort((a, b) => (b.PTS - a.PTS) || ((b.GF - b.GC) - (a.GF - a.GC)) || (b.GF - a.GF));
-        clasificados["1" + g] = lista[0].nombre; clasificados["2" + g] = lista[1].nombre;
-        terceros.push(lista[2]);
+        clasificados["1" + g] = lista[0].nombre; 
+        clasificados["2" + g] = lista[1].nombre;
+        if(lista[2]) terceros.push(lista[2]);
     }
+    
     terceros.sort((a, b) => (b.PTS - a.PTS) || ((b.GF - b.GC) - (a.GF - a.GC)) || (b.GF - a.GF));
     for (let i = 0; i < 8; i++) { if(terceros[i]) clasificados["3_" + (i+1)] = terceros[i].nombre; }
 
+    // CRUCES ADAPTADOS AL ORDEN CRONOLÓGICO Y ESPACIAL EXACTO DE LA GRÁFICA NATIVA
     const emparejamientos = [
-        { id: 73, l: clasificados["1A"], v: clasificados["3_1"] }, { id: 74, l: clasificados["1E"], v: clasificados["2A"] },
-        { id: 75, l: clasificados["1I"], v: clasificados["3_2"] }, { id: 76, l: clasificados["1C"], v: clasificados["2B"] },
-        { id: 77, l: clasificados["2C"], v: clasificados["2D"] }, { id: 78, l: clasificados["1G"], v: clasificados["3_3"] },
-        { id: 79, l: clasificados["1K"], v: clasificados["2E"] }, { id: 80, l: clasificados["1H"], v: clasificados["2F"] },
-        { id: 81, l: clasificados["1B"], v: clasificados["3_4"] }, { id: 82, l: clasificados["1F"], v: clasificados["2G"] },
-        { id: 83, l: clasificados["1J"], v: clasificados["3_5"] }, { id: 84, l: clasificados["1D"], v: clasificados["2H"] },
-        { id: 85, l: clasificados["2I"], v: clasificados["2J"] }, { id: 86, l: clasificados["1L"], v: clasificados["3_6"] },
-        { id: 87, l: clasificados["1F"], v: clasificados["3_7"] }, { id: 88, l: clasificados["2K"], v: clasificados["2L"] }
+        // LADO IZQUIERDO DEL DIAGRAMA
+        { id: 73, l: clasificados["1A"], v: clasificados["3_1"] || "3er Lugar (ABCDF)" }, 
+        { id: 74, l: clasificados["1I"], v: clasificados["3_2"] || "3er Lugar (CDFGH)" }, 
+        { id: 75, l: clasificados["2A"], v: clasificados["2B"] }, 
+        { id: 76, l: clasificados["1F"], v: clasificados["2C"] }, 
+        { id: 77, l: clasificados["2K"], v: clasificados["2L"] }, 
+        { id: 78, l: clasificados["1H"], v: clasificados["2J"] }, 
+        { id: 79, l: clasificados["1C"], v: clasificados["3_3"] || "3er Lugar (BEFIJ)" }, 
+        { id: 80, l: clasificados["1G"], v: clasificados["3_4"] || "3er Lugar (AEHIJ)" }, 
+        // LADO DERECHO DEL DIAGRAMA
+        { id: 81, l: clasificados["1E"], v: clasificados["2F"] }, 
+        { id: 82, l: clasificados["2E"], v: clasificados["2I"] }, 
+        { id: 83, l: clasificados["1B"], v: clasificados["3_5"] || "3er Lugar (CEFHI)" }, 
+        { id: 84, l: clasificados["1L"], v: clasificados["3_6"] || "3er Lugar (EHIJK)" }, 
+        { id: 85, l: clasificados["1J"], v: clasificados["2H"] }, 
+        { id: 86, l: clasificados["2D"], v: clasificados["2G"] }, 
+        { id: 87, l: clasificados["1D"], v: clasificados["3_7"] || "3er Lugar (EFGIJ)" }, 
+        { id: 88, l: clasificados["1K"], v: clasificados["3_8"] || "3er Lugar (DEIJL)" }
     ];
+    
     datosMundial.eliminatorias.r16vos = emparejamientos.map(emp => {
-        let ex = datosMundial.eliminatorias.r16vos.find(p => p.id === emp.id);
-        return { id: emp.id, local: emp.l || "Desconocido", visitante: emp.v || "Desconocido", golesL: ex?ex.golesL:"", golesV: ex?ex.golesV:"", ganadorPenaltis: ex?ex.ganadorPenaltis:"" };
+        return { id: emp.id, local: emp.l, visitante: emp.v, golesL: "", golesV: "", ganadorPenaltis: "" };
     });
-    if(datosMundial.eliminatorias.octavos.length === 0) inicializarRondasSiguientes();
-    localStorage.setItem("mundial2026_db_v33", JSON.stringify(datosMundial));
-    alert("🎉 ¡Emparejamientos de 2da Ronda Generados!");
+    
+    inicializarRondasSiguientes();
+    localStorage.setItem("mundial2026_db_v36", JSON.stringify(datosMundial));
+    alert("🎉 ¡Cuadro Oficial de Dieciseisavos de Final Generado exitosamente!");
     cambiarPestaña('r16vos');
 }
 
@@ -458,7 +478,7 @@ function inicializarRondasSiguientes() {
     for(let i=89; i<=96; i++) datosMundial.eliminatorias.octavos.push({ id: i, local: "Ganador ?", visitante: "Ganador ?", golesL:"", golesV:"", ganadorPenaltis:"" });
     for(let i=97; i<=100; i++) datosMundial.eliminatorias.cuartos.push({ id: i, local: "Ganador ?", visitante: "Ganador ?", golesL:"", golesV:"", ganadorPenaltis:"" });
     for(let i=101; i<=102; i++) datosMundial.eliminatorias.semis.push({ id: i, local: "Ganador ?", visitante: "Ganador ?", golesL:"", golesV:"", ganadorPenaltis:"" });
-    datosMundial.eliminatorias.final = [{ id: 103, local: "Finalista 1", visitante: "Finalista 2", golesL:"", golesV:"", ganadorPenaltis:"" }];
+    datosMundial.eliminatorias.final = [{ id: 103, local: "Finalista L", visitante: "Finalista V", golesL:"", golesV:"", ganadorPenaltis:"" }];
 }
 
 function obtenerGanador(partido) {
@@ -491,8 +511,8 @@ function encadenarSiguienteRonda(faseActual) {
             el.semis[index].visitante = obtenerGanador(el.cuartos.find(p=>p.id === par[1])) || "Ganador " + par[1];
         });
     } else if (faseActual === 'semis') {
-        el.final[0].local = obtenerGanador(el.semis.find(p=>p.id === 101)) || "Finalista 1";
-        el.final[0].visitante = obtenerGanador(el.semis.find(p=>p.id === 102)) || "Finalista 2";
+        el.final[0].local = obtenerGanador(el.semis.find(p=>p.id === 101)) || "Finalista L";
+        el.final[0].visitante = obtenerGanador(el.semis.find(p=>p.id === 102)) || "Finalista V";
     }
 }
 
@@ -509,7 +529,7 @@ function renderizarFaseEliminatoria(fase) {
         const div = document.createElement("div");
         div.className = "partido";
         let selectPenaltis = "";
-        let esDesconocido = p.local.includes("Ganador") || p.visitante.includes("Ganador") || p.local.includes("SF") || p.local.includes("Finalista");
+        let esDesconocido = (p.local && p.local.includes("Ganador")) || (p.visitante && p.visitante.includes("Ganador"));
         if (p.golesL !== "" && p.golesV !== "" && parseInt(p.golesL) === parseInt(p.golesV) && !esDesconocido) {
             selectPenaltis = `
                 <div class="penaltis">
@@ -545,7 +565,7 @@ function actualizarGolesEliminatoria(fase, id, tipo, valor) {
         partido[tipo === 'L' ? 'golesL' : 'golesV'] = (valor === "") ? "" : parseInt(valor);
         if (partido.golesL !== partido.golesV) partido.ganadorPenaltis = "";
         encadenarSiguienteRonda(fase);
-        localStorage.setItem("mundial2026_db_v33", JSON.stringify(datosMundial));
+        localStorage.setItem("mundial2026_db_v36", JSON.stringify(datosMundial));
         renderizarFaseEliminatoria(fase);
     }
 }
@@ -555,12 +575,12 @@ function actualizarPenaltis(fase, id, winner) {
     if (partido) {
         partido.ganadorPenaltis = winner;
         encadenarSiguienteRonda(fase);
-        localStorage.setItem("mundial2026_db_v33", JSON.stringify(datosMundial));
+        localStorage.setItem("mundial2026_db_v36", JSON.stringify(datosMundial));
     }
 }
 
 function guardarYCalcular() {
-    localStorage.setItem("mundial2026_db_v33", JSON.stringify(datosMundial));
+    localStorage.setItem("mundial2026_db_v36", JSON.stringify(datosMundial));
     calcularTablas();
 }
 

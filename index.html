@@ -125,12 +125,10 @@
         @media (min-width: 650px) { .marcador-container { width: 16%; } }
         .marcador { display: flex; justify-content: center; gap: 12px; align-items: center; }
         
-        /* 🔥 AJUSTE DEFINITIVO PARA QUE LOS NÚMEROS DE GOLES NO SE RECORTEN (image_16beff.png) */
         .marcador input { 
             width: 60px; text-align: center; padding: 8px 6px; font-size: 22px; border: 2px solid #eaedf0; border-radius: 12px; 
-            font-weight: 800; color: var(--color-azul); background: #f8fafc; -moz-appearance: textfield; line-height: 1.2;
+            font-weight: 800; color: var(--color-azul); background: #f8fafc; -webkit-appearance: none; -moz-appearance: textfield; line-height: 1.2;
         }
-        /* Ocultar flechas nativas molestas de incremento */
         .marcador input::-webkit-outer-spin-button,
         .marcador input::-webkit-inner-spin-button {
             -webkit-appearance: none; margin: 0;
@@ -195,7 +193,8 @@
 <footer>&copy; 2026 | ALONZO | FIFA UNITED 2026</footer>
 
 <script>
-const CONFIG_VERSION = "mundial2026_v42_input_fix";
+// 📑 DECLARACIÓN ABSOLUTA DE MAPAS AL INICIO DEL SCRIPT (Previene ReferenceError)
+const CONFIG_VERSION = "mundial2026_db_v43_final_scope";
 
 const codigosBanderas = {
     "México": "mx", "Sudáfrica": "za", "Corea del Sur": "kr", "República Checa": "cz",
@@ -211,6 +210,14 @@ const codigosBanderas = {
     "Portugal": "pt", "RD Congo": "cd", "Uzbekistán": "uz", "Colombia": "co",
     "Inglaterra": "gb-eng", "Croacia": "hr", "Ghana": "gh", "Panamá": "pa"
 };
+
+// Declaración prioritaria de la función para banderas
+function generarHTMLIdEquipo(nombre, esLocal) {
+    const codigo = codigosBanderas[nombre];
+    if (!codigo) return `<span>${nombre}</span>`;
+    const imgHtml = `<img class="bandera-icon" src="https://flagcdn.com/w160/${codigo}.png" alt="${nombre}">`;
+    return esLocal ? `<span>${nombre}</span> ${imgHtml}` : `${imgHtml} <span>${nombre}</span>`;
+}
 
 const configuracionMundial = {
     grupos: {
@@ -288,7 +295,7 @@ const configuracionMundial = {
         { id: 45, fecha: "21 Jun", horario: "12:00", grupo: "H", estadio: "Estadio Atlanta", local: "España", visitante: "Arabia Saudita", golesL: 4, golesV: 0 },
         { id: 39, fecha: "21 Jun", horario: "15:00", grupo: "G", estadio: "Estadio Los Ángeles", local: "Bélgica", visitante: "Irán", golesL: 0, golesV: 0 },
         { id: 46, fecha: "21 Jun", horario: "18:00", grupo: "H", estadio: "Estadio Miami", local: "Uruguay", visitante: "Cabo Verde", golesL: 2, golesV: 2 },
-        { id: 40, fecha: "21 Jun", horario: "21:00", group: "G", estadio: "Estadio BC Place Vancouver", local: "Nueva Zelanda", visitante: "Egipto", golesL: 1, golesV: 3 },
+        { id: 40, fecha: "21 Jun", horario: "21:00", grupo: "G", estadio: "Estadio BC Place Vancouver", local: "Nueva Zelanda", visitante: "Egipto", golesL: 1, golesV: 3 },
         
         // 🗓️ LUNES 22 DE JUNIO 2026
         { id: 57, fecha: "22 Jun", horario: "13:00", grupo: "J", estadio: "Estadio Dallas", local: "Argentina", visitante: "Austria", golesL: 2, golesV: 0 },
@@ -302,7 +309,7 @@ const configuracionMundial = {
         { id: 70, fecha: "23 Jun", horario: "19:00", grupo: "L", estadio: "Estadio Toronto", local: "Panamá", visitante: "Croacia", golesL: 0, golesV: 1 },
         { id: 64, fecha: "23 Jun", horario: "22:00", grupo: "K", estadio: "Estadio Guadalajara", local: "Colombia", visitante: "RD Congo", golesL: 1, golesV: 0 },
         
-        // 🗓️ MIÉRCOLES 24 DE JUNIO 2026
+        // 🗓️ MIÉRCOLES 24 DE JUNIO 2026 (CIERRES REALES COMPLETOS)
         { id: 11, fecha: "24 Jun", horario: "15:00", grupo: "B", estadio: "Estadio BC Place Vancouver", local: "Suiza", visitante: "Canadá", golesL: 2, golesV: 1 },
         { id: 12, fecha: "24 Jun", horario: "15:00", grupo: "B", estadio: "Estadio Seattle", local: "Bosnia y Herzegovina", visitante: "Qatar", golesL: 3, golesV: 1 },
         { id: 17, fecha: "24 Jun", horario: "18:00", grupo: "C", estadio: "Estadio Miami", local: "Brasil", visitante: "Escocia", golesL: 3, golesV: 0 },
@@ -316,7 +323,7 @@ const configuracionMundial = {
         { id: 35, fecha: "25 Jun", horario: "19:00", grupo: "F", estadio: "Estadio Dallas", local: "Japón", visitante: "Suecia", golesL: "", golesV: "" },
         { id: 36, fecha: "25 Jun", horario: "19:00", grupo: "F", estadio: "Estadio Kansas City", local: "Túnez", visitante: "Países Bajos", golesL: "", golesV: "" },
         { id: 23, fecha: "25 Jun", horario: "22:00", grupo: "D", estadio: "Estadio Los Ángeles", local: "Turquía", visitante: "Estados Unidos", golesL: "", golesV: "" },
-        { id: 24, fecha: "25 Jun", horario: "22:00", group: "D", estadio: "Estadio Bahía de San Francisco", local: "Paraguay", visitante: "Australia", golesL: "", golesV: "" },
+        { id: 24, fecha: "25 Jun", horario: "22:00", grupo: "D", estadio: "Estadio Bahía de San Francisco", local: "Paraguay", visitante: "Australia", golesL: "", golesV: "" },
         
         // 🗓️ VIERNES 26 DE JUNIO 2026
         { id: 53, fecha: "26 Jun", horario: "15:00", grupo: "I", estadio: "Estadio Boston", local: "Noruega", visitante: "Francia", golesL: "", golesV: "" },
@@ -337,22 +344,17 @@ const configuracionMundial = {
     eliminatorias: { r16vos: [], octavos: [], cuartos: [], semis: [], final: [] }
 };
 
-let localDB = localStorage.getItem("mundial2026_db_v42");
+// 2. PARCHE CONTROL SCOPE CONTRA DATOS ANTERIORES
+let localDB = localStorage.getItem("mundial2026_db_v43");
 
 if (!localStorage.getItem(CONFIG_VERSION) || !localDB) {
     localStorage.clear();
     localStorage.setItem(CONFIG_VERSION, "true");
-    localStorage.setItem("mundial2026_db_v42", JSON.stringify(configuracionMundial));
+    localStorage.setItem("mundial2026_db_v43", JSON.stringify(configuracionMundial));
 }
 
-let datosMundial = JSON.parse(localStorage.getItem("mundial2026_db_v42")) || JSON.parse(JSON.stringify(configuracionMundial));
+let datosMundial = JSON.parse(localStorage.getItem("mundial2026_db_v43")) || JSON.parse(JSON.stringify(configuracionMundial));
 let cacheEstadisticas = {};
-
-if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-        navigator.serviceWorker.register('./sw.js').catch(err => console.log(err));
-    });
-}
 
 function inicializarPartidosGrupos() {
     const contenedor = document.getElementById("contenedor-partidos");
@@ -473,7 +475,7 @@ function avanzarADieciseisavos() {
         return { id: emp.id, local: emp.l, visitante: emp.v, golesL: "", golesV: "", ganadorPenaltis: "" };
     });
     inicializarRondasSiguientes();
-    localStorage.setItem("mundial2026_db_v42", JSON.stringify(datosMundial));
+    localStorage.setItem("mundial2026_db_v43", JSON.stringify(datosMundial));
     alert("🎉 ¡Cuadro Oficial de Dieciseisavos de Final Generado exitosamente!");
     cambiarPestaña('r16vos');
 }
@@ -570,7 +572,7 @@ function actualizarGolesEliminatoria(fase, id, tipo, valor) {
         partido[tipo === 'L' ? 'golesL' : 'golesV'] = (valor === "") ? "" : parseInt(valor);
         if (partido.golesL !== partido.golesV) partido.ganadorPenaltis = "";
         encadenarSiguienteRonda(fase);
-        localStorage.setItem("mundial2026_db_v42", JSON.stringify(datosMundial));
+        localStorage.setItem("mundial2026_db_v43", JSON.stringify(datosMundial));
         renderizarFaseEliminatoria(fase);
     }
 }
@@ -580,12 +582,12 @@ function actualizarPenaltis(fase, id, winner) {
     if (partido) {
         partido.ganadorPenaltis = winner;
         encadenarSiguienteRonda(fase);
-        localStorage.setItem("mundial2026_db_v42", JSON.stringify(datosMundial));
+        localStorage.setItem("mundial2026_db_v43", JSON.stringify(datosMundial));
     }
 }
 
 function guardarYCalcular() {
-    localStorage.setItem("mundial2026_db_v42", JSON.stringify(datosMundial));
+    localStorage.setItem("mundial2026_db_v43", JSON.stringify(datosMundial));
     calcularTablas();
 }
 

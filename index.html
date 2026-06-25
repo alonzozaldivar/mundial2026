@@ -179,21 +179,21 @@
 <footer>&copy; 2026 | ALONZO | FIFA UNITED 2026</footer>
 
 <script>
-// 1. MAPAS DE DEPURACIÓN EN ALTA PRIORIDAD
-const CONFIG_VERSION = "mundial2026_v37_cronologico_scores_final";
+// 1. MAPAS DE CONFIGURACIÓN DE DATOS (UNIFICADO COREA DEL SUR)
+const CONFIG_VERSION = "mundial2026_v38_corea_fix";
 
 const codigosBanderas = {
-    "México": "mx", "Sudáfrica": "za", "República de Corea": "kr", "Corea del Sur": "kr", "República Checa": "cz",
+    "México": "mx", "Sudáfrica": "za", "Corea del Sur": "kr", "República Checa": "cz",
     "Canadá": "ca", "Bosnia y Herzegovina": "ba", "Catar": "qa", "Suiza": "ch", "Qatar": "qa",
     "Brasil": "br", "Marruecos": "ma", "Haití": "ht", "Escocia": "gb-sct",
     "Estados Unidos": "us", "Paraguay": "py", "Australia": "au", "Turquía": "tr",
     "Alemania": "de", "Curazao": "cw", "Costa de Marfil": "ci", "Ecuador": "ec",
     "Países Bajos": "nl", "Japón": "jp", "Suecia": "se", "Túnez": "tn",
-    "Bélgica": "be", "Egipto": "eg", "RI de Irán": "ir", "Nueva Zelanda": "nz",
+    "Bélgica": "be", "Egipto": "eg", "RI de Irán": "ir", "Nueva Zelanda": "nz", "Irán": "ir",
     "España": "es", "Cabo Verde": "cv", "Arabia Saudí": "sa", "Uruguay": "uy", "Arabia Saudita": "sa",
     "Francia": "fr", "Senegal": "sn", "Irak": "iq", "Noruega": "no",
     "Argentina": "ar", "Argelia": "dz", "Austria": "at", "Jordania": "jo",
-    "Portugal": "pt", "RD Congo": "cd", "RD de Congo": "cd", "Uzbekistán": "uz", "Colombia": "co",
+    "Portugal": "pt", "RD Congo": "cd", "Uzbekistán": "uz", "Colombia": "co",
     "Inglaterra": "gb-eng", "Croacia": "hr", "Ghana": "gh", "Panamá": "pa"
 };
 
@@ -206,7 +206,7 @@ function generarHTMLIdEquipo(nombre, esLocal) {
 
 const configuracionMundial = {
     grupos: {
-        "A": ["México", "Sudáfrica", "República de Corea", "República Checa"],
+        "A": ["México", "Sudáfrica", "Corea del Sur", "República Checa"],
         "B": ["Canadá", "Bosnia y Herzegovina", "Catar", "Suiza"],
         "C": ["Brasil", "Marruecos", "Haití", "Escocia"],
         "D": ["Estados Unidos", "Paraguay", "Australia", "Turquía"],
@@ -294,7 +294,7 @@ const configuracionMundial = {
         { id: 70, fecha: "23 Jun", horario: "19:00", grupo: "L", estadio: "Estadio Toronto", local: "Panamá", visitante: "Croacia", golesL: 0, golesV: 1 },
         { id: 64, fecha: "23 Jun", horario: "22:00", grupo: "K", estadio: "Estadio Guadalajara", local: "Colombia", visitante: "RD Congo", golesL: 1, golesV: 0 },
         
-        // 🗓️ MIÉRCOLES 24 DE JUNIO 2026 (CIERRES REALES COMPLETOS)
+        // 🗓️ MIÉRCOLES 24 DE JUNIO 2026 (CIERRES MAESTROS)
         { id: 11, fecha: "24 Jun", horario: "15:00", grupo: "B", estadio: "Estadio BC Place Vancouver", local: "Suiza", visitante: "Canadá", golesL: 2, golesV: 1 },
         { id: 12, fecha: "24 Jun", horario: "15:00", grupo: "B", estadio: "Estadio Seattle", local: "Bosnia y Herzegovina", visitante: "Qatar", golesL: 3, golesV: 1 },
         { id: 17, fecha: "24 Jun", horario: "18:00", grupo: "C", estadio: "Estadio Miami", local: "Brasil", visitante: "Escocia", golesL: 3, golesV: 0 },
@@ -305,16 +305,23 @@ const configuracionMundial = {
     eliminatorias: { r16vos: [], octavos: [], cuartos: [], semis: [], final: [] }
 };
 
-let localDB = localStorage.getItem("mundial2026_db_v37");
+// 2. PARCHE CONTROL SCOPE CONTRA DATOS ROTOS DE LA CACHÉ
+let localDB = localStorage.getItem("mundial2026_db_v38");
 
 if (!localStorage.getItem(CONFIG_VERSION) || !localDB) {
     localStorage.clear();
     localStorage.setItem(CONFIG_VERSION, "true");
-    localStorage.setItem("mundial2026_db_v37", JSON.stringify(configuracionMundial));
+    localStorage.setItem("mundial2026_db_v38", JSON.stringify(configuracionMundial));
 }
 
-let datosMundial = JSON.parse(localStorage.getItem("mundial2026_db_v37")) || JSON.parse(JSON.stringify(configuracionMundial));
+let datosMundial = JSON.parse(localStorage.getItem("mundial2026_db_v38")) || JSON.parse(JSON.stringify(configuracionMundial));
 let cacheEstadisticas = {};
+
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js').catch(err => console.log(err));
+    });
+}
 
 function inicializarPartidosGrupos() {
     const contenedor = document.getElementById("contenedor-partidos");
@@ -399,7 +406,6 @@ function renderizarTablasYSectorTerceros() {
     document.getElementById("tabla-mejores-terceros").innerHTML = htmlT;
 }
 
-// 🏛️ DISTRIBUCIÓN VERTICAL OFICIAL ADAPTADA DE LA IMAGEN DE LOS DE 16VOS
 function avanzarADieciseisavos() {
     let incompleto = datosMundial.partidos.some(p => p.golesL === "" || p.golesV === "");
     if (incompleto) { alert("⚠️ Completa primero todos los marcadores de la fase de grupos."); return; }
@@ -415,7 +421,7 @@ function avanzarADieciseisavos() {
     for (let i = 0; i < 8; i++) { if(terceros[i]) clasificados["3_" + (i+1)] = terceros[i].nombre; }
 
     const emparejamientos = [
-        // LADO IZQUIERDO DEL CUADRO
+        // LADO IZQUIERDO DEL DIAGRAMA
         { id: 73, l: clasificados["1A"], v: clasificados["3_1"] || "3er Lugar (ABCDF)" }, 
         { id: 74, l: clasificados["1I"], v: clasificados["3_2"] || "3er Lugar (CDFGH)" }, 
         { id: 75, l: clasificados["2A"], v: clasificados["2B"] }, 
@@ -424,7 +430,7 @@ function avanzarADieciseisavos() {
         { id: 78, l: clasificados["1H"], v: clasificados["2J"] }, 
         { id: 79, l: clasificados["1C"], v: clasificados["3_3"] || "3er Lugar (BEFIJ)" }, 
         { id: 80, l: clasificados["1G"], v: clasificados["3_4"] || "3er Lugar (AEHIJ)" }, 
-        // LADO DERECHO DEL CUADRO
+        // LADO DERECHO DEL DIAGRAMA
         { id: 81, l: clasificados["1E"], v: clasificados["2F"] }, 
         { id: 82, l: clasificados["2E"], v: clasificados["2I"] }, 
         { id: 83, l: clasificados["1B"], v: clasificados["3_5"] || "3er Lugar (CEFHI)" }, 
@@ -438,7 +444,7 @@ function avanzarADieciseisavos() {
         return { id: emp.id, local: emp.l, visitante: emp.v, golesL: "", golesV: "", ganadorPenaltis: "" };
     });
     inicializarRondasSiguientes();
-    localStorage.setItem("mundial2026_db_v37", JSON.stringify(datosMundial));
+    localStorage.setItem("mundial2026_db_v38", JSON.stringify(datosMundial));
     alert("🎉 ¡Cuadro Oficial de Dieciseisavos de Final Generado exitosamente!");
     cambiarPestaña('r16vos');
 }
@@ -535,7 +541,7 @@ function actualizarGolesEliminatoria(fase, id, tipo, valor) {
         partido[tipo === 'L' ? 'golesL' : 'golesV'] = (valor === "") ? "" : parseInt(valor);
         if (partido.golesL !== partido.golesV) partido.ganadorPenaltis = "";
         encadenarSiguienteRonda(fase);
-        localStorage.setItem("mundial2026_db_v37", JSON.stringify(datosMundial));
+        localStorage.setItem("mundial2026_db_v38", JSON.stringify(datosMundial));
         renderizarFaseEliminatoria(fase);
     }
 }
@@ -545,12 +551,12 @@ function actualizarPenaltis(fase, id, winner) {
     if (partido) {
         partido.ganadorPenaltis = winner;
         encadenarSiguienteRonda(fase);
-        localStorage.setItem("mundial2026_db_v37", JSON.stringify(datosMundial));
+        localStorage.setItem("mundial2026_db_v38", JSON.stringify(datosMundial));
     }
 }
 
 function guardarYCalcular() {
-    localStorage.setItem("mundial2026_db_v37", JSON.stringify(datosMundial));
+    localStorage.setItem("mundial2026_db_v38", JSON.stringify(datosMundial));
     calcularTablas();
 }
 

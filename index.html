@@ -10,6 +10,10 @@
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
     
     <style>
+        * {
+            box-sizing: border-box;
+        }
+
         :root {
             --color-verde: #1b5e20;
             --color-azul: #0d47a1;
@@ -106,16 +110,19 @@
         .info-partido { font-size: 11px; color: #999; text-transform: uppercase; font-weight: 800; letter-spacing: 1px; text-align: center; }
         @media (min-width: 650px) { .info-partido { width: 24%; text-align: left; } }
         
-        .equipo-bloque { display: flex; align-items: center; gap: 14px; font-weight: 800; font-size: 16px; width: 100%; justify-content: center; color: #2c3e50; }
+        .equipo-bloque { 
+            display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 15px; width: 100%; justify-content: center; color: #2c3e50; 
+            white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+        }
         @media (min-width: 650px) {
-            .equipo-bloque { width: 30%; }
+            .equipo-bloque { width: 30%; font-size: 16px; gap: 14px; }
             .equipo-bloque.local { justify-content: flex-end; text-align: right; }
             .equipo-bloque.visitante { justify-content: flex-start; text-align: left; }
         }
-        .bandera-icon { width: 36px; height: auto; border-radius: 6px; box-shadow: 0 3px 8px rgba(0,0,0,0.15); flex-shrink: 0; border: 1px solid #eee; }
+        .bandera-icon { width: 34px; height: auto; border-radius: 6px; box-shadow: 0 3px 8px rgba(0,0,0,0.15); flex-shrink: 0; border: 1px solid #eee; }
         
-        .marcador-container { display: flex; flex-direction: column; align-items: center; width: 100%; }
-        @media (min-width: 650px) { .marcador-container { width: 18%; } }
+        .marcador-container { display: flex; flex-direction: column; align-items: center; width: 100%; flex-shrink: 0; }
+        @media (min-width: 650px) { .marcador-container { width: 16%; } }
         .marcador { display: flex; justify-content: center; gap: 12px; align-items: center; }
         .marcador input { 
             width: 48px; text-align: center; padding: 10px; font-size: 20px; border: 2px solid #eaedf0; border-radius: 12px; 
@@ -129,6 +136,18 @@
         td { padding: 15px 10px; text-align: center; border-bottom: 1px solid #f1f1f1; font-size: 14px; font-weight: 500; }
         .clasificado-directo { background-color: #f0fff4 !important; color: #2f855a; font-weight: 700; }
         
+        /* 🔥 ESTILO CORREGIDO Y DEFINITIVO PARA EL BOTÓN PREMIUM (image_16a7dc.png) */
+        .btn-confirmar { 
+            display: block; width: 100%; padding: 18px; background: linear-gradient(135deg, var(--color-rojo) 0%, #961515 100%); 
+            color: white; border: none; border-radius: 50px; font-size: 16px; cursor: pointer; font-weight: 800; margin-top: 25px; 
+            text-transform: uppercase; box-shadow: 0 10px 20px rgba(183, 28, 28, 0.35); letter-spacing: 1px; transition: all 0.3s ease;
+            text-align: center; outline: none; -webkit-appearance: none;
+        }
+        .btn-confirmar:hover { background: linear-gradient(135deg, #961515 0%, #750f0f 100%); transform: translateY(-2px); box-shadow: 0 12px 24px rgba(183, 28, 28, 0.45); }
+        .btn-confirmar:active { transform: translateY(0); box-shadow: 0 5px 12px rgba(183, 28, 28, 0.3); }
+
+        .llave-container { display: flex; flex-direction: column; gap: 12px; max-width: 850px; margin: 0 auto; }
+        .alerta-vacio { text-align: center; color: var(--color-rojo); font-weight: bold; padding: 20px; }
         .estadio-text { font-size: 10px; color: #64748b; font-weight: 600; display: block; margin-top: 2px; }
 
         footer { text-align: center; padding: 40px; color: white; font-weight: 800; text-transform: uppercase; letter-spacing: 2px; opacity: 0.8; }
@@ -170,8 +189,7 @@
 <footer>&copy; 2026 | ALONZO | FIFA UNITED 2026</footer>
 
 <script>
-// 1. VARIABLES MAESTRAS Y MAPEOS DE PAÍSES
-const CONFIG_VERSION = "mundial2026_v39_full_cronologico";
+const CONFIG_VERSION = "mundial2026_v40_responsive_ui";
 
 const codigosBanderas = {
     "México": "mx", "Sudáfrica": "za", "Corea del Sur": "kr", "República Checa": "cz",
@@ -251,7 +269,7 @@ const configuracionMundial = {
         
         // 🗓️ JUEVES 18 DE JUNIO 2026
         { id: 3,  fecha: "18 Jun", horario: "12:00", grupo: "A", estadio: "Estadio Atlanta", local: "República Checa", visitante: "Sudáfrica", golesL: 1, golesV: 1 },
-        { id: 9,  fecha: "18 Jun", horario: "15:00", grupo: "B", estadio: "Estadio Los Ángeles", local: "Bosnia y Herzegovina", visitante: "Suiza", golesL: 1, golesV: 4 }, // Marcador corregido
+        { id: 9,  fecha: "18 Jun", horario: "15:00", grupo: "B", estadio: "Estadio Los Ángeles", local: "Bosnia y Herzegovina", visitante: "Suiza", golesL: 1, golesV: 4 },
         { id: 10, fecha: "18 Jun", horario: "18:00", grupo: "B", estadio: "Estadio BC Place Vancouver", local: "Canadá", visitante: "Qatar", golesL: 6, golesV: 0 },
         { id: 4,  fecha: "18 Jun", horario: "21:00", grupo: "A", estadio: "Estadio Guadalajara", local: "México", visitante: "Corea del Sur", golesL: 1, golesV: 0 },
         
@@ -293,7 +311,7 @@ const configuracionMundial = {
         { id: 5,  fecha: "24 Jun", horario: "21:00", grupo: "A", estadio: "Estadio Ciudad de México", local: "República Checa", visitante: "México", golesL: 0, golesV: 3 },
         { id: 6,  fecha: "24 Jun", horario: "21:00", grupo: "A", estadio: "Estadio Monterrey", local: "Sudáfrica", visitante: "Corea del Sur", golesL: 1, golesV: 0 },
 
-        // 🗓️ JUEVES 25 DE JUNIO 2026 (PARTIDOS RESTANTES RESTAURADOS)
+        // 🗓️ JUEVES 25 DE JUNIO 2026
         { id: 29, fecha: "25 Jun", horario: "16:00", grupo: "E", estadio: "Estadio Filadelfia", local: "Curazao", visitante: "Costa de Marfil", golesL: "", golesV: "" },
         { id: 30, fecha: "25 Jun", horario: "16:00", grupo: "E", estadio: "Estadio Nueva York Nueva Jersey", local: "Ecuador", visitante: "Alemania", golesL: "", golesV: "" },
         { id: 35, fecha: "25 Jun", horario: "19:00", grupo: "F", estadio: "Estadio Dallas", local: "Japón", visitante: "Suecia", golesL: "", golesV: "" },
@@ -301,34 +319,34 @@ const configuracionMundial = {
         { id: 23, fecha: "25 Jun", horario: "22:00", grupo: "D", estadio: "Estadio Los Ángeles", local: "Turquía", visitante: "Estados Unidos", golesL: "", golesV: "" },
         { id: 24, fecha: "25 Jun", horario: "22:00", grupo: "D", estadio: "Estadio Bahía de San Francisco", local: "Paraguay", visitante: "Australia", golesL: "", golesV: "" },
         
-        // 🗓️ VIERNES 26 DE JUNIO 2026 (PARTIDOS RESTANTES RESTAURADOS)
+        // 🗓️ VIERNES 26 DE JUNIO 2026
         { id: 53, fecha: "26 Jun", horario: "15:00", grupo: "I", estadio: "Estadio Boston", local: "Noruega", visitante: "Francia", golesL: "", golesV: "" },
         { id: 54, fecha: "26 Jun", horario: "15:00", grupo: "I", estadio: "Estadio Toronto", local: "Senegal", visitante: "Irak", golesL: "", golesV: "" },
-        { id: 47, fecha: "26 Jun", horario: "20:00", grupo: "H", estadio: "Estadio Houston", local: "Cabo Verde", visitante: "Arabia Saudí", golesL: "", golesV: "" },
+        { id: 47, fecha: "26 Jun", horario: "20:00", group: "H", estadio: "Estadio Houston", local: "Cabo Verde", visitante: "Arabia Saudí", golesL: "", golesV: "" },
         { id: 48, fecha: "26 Jun", horario: "20:00", grupo: "H", estadio: "Estadio Guadalajara", local: "Uruguay", visitante: "España", golesL: "", golesV: "" },
         { id: 41, fecha: "26 Jun", horario: "23:00", grupo: "G", estadio: "Estadio Seattle", local: "Egipto", visitante: "Irán", golesL: "", golesV: "" },
         { id: 42, fecha: "26 Jun", horario: "23:00", grupo: "G", estadio: "Estadio BC Place Vancouver", local: "Nueva Zelanda", visitante: "Bélgica", golesL: "", golesV: "" },
         
-        // 🗓️ SÁBADO 27 DE JUNIO 2026 (PARTIDOS RESTANTES RESTAURADOS)
+        // 🗓️ SÁBADO 27 DE JUNIO 2026
         { id: 71, fecha: "27 Jun", horario: "17:00", grupo: "L", estadio: "Estadio Nueva York Nueva Jersey", local: "Panamá", visitante: "Inglaterra", golesL: "", golesV: "" },
         { id: 72, fecha: "27 Jun", horario: "17:00", grupo: "L", estadio: "Estadio Filadelfia", local: "Croacia", visitante: "Ghana", golesL: "", golesV: "" },
         { id: 65, fecha: "27 Jun", horario: "19:30", grupo: "K", estadio: "Estadio Miami", local: "Colombia", visitante: "Portugal", golesL: "", golesV: "" },
         { id: 66, fecha: "27 Jun", horario: "19:30", grupo: "K", estadio: "Estadio Atlanta", local: "RD Congo", visitante: "Uzbekistán", golesL: "", golesV: "" },
         { id: 59, fecha: "27 Jun", horario: "22:00", grupo: "J", estadio: "Estadio Kansas City", local: "Argelia", visitante: "Austria", golesL: "", golesV: "" },
-        { id: 60, fecha: "27 Jun", horario: "22:00", group: "J", estadio: "Estadio Dallas", local: "Jordania", visitante: "Argentina", golesL: "", golesV: "" }
+        { id: 60, fecha: "27 Jun", horario: "22:00", grupo: "J", estadio: "Estadio Dallas", local: "Jordania", visitante: "Argentina", golesL: "", golesV: "" }
     ],
     eliminatorias: { r16vos: [], octavos: [], cuartos: [], semis: [], final: [] }
 };
 
-let localDB = localStorage.getItem("mundial2026_db_v39");
+let localDB = localStorage.getItem("mundial2026_db_v40");
 
 if (!localStorage.getItem(CONFIG_VERSION) || !localDB) {
     localStorage.clear();
     localStorage.setItem(CONFIG_VERSION, "true");
-    localStorage.setItem("mundial2026_db_v39", JSON.stringify(configuracionMundial));
+    localStorage.setItem("mundial2026_db_v40", JSON.stringify(configuracionMundial));
 }
 
-let datosMundial = JSON.parse(localStorage.getItem("mundial2026_db_v39")) || JSON.parse(JSON.stringify(configuracionMundial));
+let datosMundial = JSON.parse(localStorage.getItem("mundial2026_db_v40")) || JSON.parse(JSON.stringify(configuracionMundial));
 let cacheEstadisticas = {};
 
 if ('serviceWorker' in navigator) {
@@ -456,7 +474,7 @@ function avanzarADieciseisavos() {
         return { id: emp.id, local: emp.l, visitante: emp.v, golesL: "", golesV: "", ganadorPenaltis: "" };
     });
     inicializarRondasSiguientes();
-    localStorage.setItem("mundial2026_db_v39", JSON.stringify(datosMundial));
+    localStorage.setItem("mundial2026_db_v40", JSON.stringify(datosMundial));
     alert("🎉 ¡Cuadro Oficial de Dieciseisavos de Final Generado exitosamente!");
     cambiarPestaña('r16vos');
 }
@@ -553,7 +571,7 @@ function actualizarGolesEliminatoria(fase, id, tipo, valor) {
         partido[tipo === 'L' ? 'golesL' : 'golesV'] = (valor === "") ? "" : parseInt(valor);
         if (partido.golesL !== partido.golesV) partido.ganadorPenaltis = "";
         encadenarSiguienteRonda(fase);
-        localStorage.setItem("mundial2026_db_v39", JSON.stringify(datosMundial));
+        localStorage.setItem("mundial2026_db_v40", JSON.stringify(datosMundial));
         renderizarFaseEliminatoria(fase);
     }
 }
@@ -563,12 +581,17 @@ function actualizarPenaltis(fase, id, winner) {
     if (partido) {
         partido.ganadorPenaltis = winner;
         encadenarSiguienteRonda(fase);
-        localStorage.setItem("mundial2026_db_v39", JSON.stringify(datosMundial));
+        localStorage.setItem("mundial2026_db_v40", JSON.stringify(datosMundial));
     }
 }
 
+function保存yCalcular() {
+    localStorage.setItem("mundial2026_db_v40", JSON.stringify(datosMundial));
+    calcularTablas();
+}
+
 function guardarYCalcular() {
-    localStorage.setItem("mundial2026_db_v39", JSON.stringify(datosMundial));
+    localStorage.setItem("mundial2026_db_v40", JSON.stringify(datosMundial));
     calcularTablas();
 }
 

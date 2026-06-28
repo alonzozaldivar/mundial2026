@@ -1,5 +1,5 @@
 // 📑 CACHÉ OFICIAL V30 - Sincronizado para limpiar errores de referencia previos
-const CACHE_NAME = 'fifa-united-2026-v44';
+const CACHE_NAME = 'fifa-united-2026-v45';
 const ASSETS = [
   './index.html',
   './manifest.json'
